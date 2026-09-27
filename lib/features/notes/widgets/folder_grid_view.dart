@@ -1,0 +1,63 @@
+import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
+import 'package:tano/core/models/folder.dart';
+import 'package:tano/features/notes/home_view_model.dart';
+import 'package:tano/shared/widgets/entity_card.dart';
+import 'package:tano/shared/widgets/entity_layout.dart';
+import 'package:tano/shared/widgets/entity_sliver.dart';
+import 'package:tano/shared/widgets/folder_card_bodies.dart';
+
+/// Grid of folder cards, one card per folder.
+class FolderGridView extends StatelessWidget {
+  const FolderGridView({
+    super.key,
+    required this.viewModel,
+    required this.onOpenFolder,
+  });
+
+  final HomeViewModel viewModel;
+  final void Function(Folder folder) onOpenFolder;
+
+  @override
+  Widget build(BuildContext context) {
+    return EntitySliver<Folder>(
+      items: viewModel.folders,
+      isList: false,
+      columnCount: folderColumnCount,
+      // A folder tile is a perfect square; only documents keep the 0.9 ratio.
+      aspectRatio: 1.0,
+      cardBuilder: (BuildContext context, Folder folder) => _card(folder),
+    );
+  }
+
+  Widget _card(Folder folder) {
+    final int noteCount = viewModel.noteCountIn(folder.id);
+    return EntityCard(
+      kind: EntityKind.folder,
+      category: folder.category,
+      title: folder.name,
+      subtitle: 'x$noteCount',
+      subtitleIcon: Symbols.sticky_note_2,
+      isImportant: folder.important,
+      isLocked: folder.isLocked,
+      isSelectable: !folder.isLocked,
+      isSelected: viewModel.selected.contains(folder.id),
+      isInSelectionMode: viewModel.isInSelectionMode,
+      onTap: () {
+        if (viewModel.isInSelectionMode) {
+          viewModel.toggleSelection(folder.id);
+        } else {
+          onOpenFolder(folder);
+        }
+      },
+      onLongPress: () => viewModel.enterSelectionMode(folder.id),
+      onSelectionToggle: () => viewModel.toggleSelection(folder.id),
+      builder: (context, textColor, hasCover) => buildFolderGridContent(
+        folder: folder,
+        noteCount: noteCount,
+        textColor: textColor,
+        hasCover: hasCover,
+      ),
+    );
+  }
+}

@@ -1,0 +1,122 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:tano/core/models/folder.dart';
+import 'package:tano/core/models/note.dart';
+
+void main() {
+  group('Note', () {
+    test('serializes and deserializes a note', () {
+      final note = Note(
+        id: '123',
+        title: 'Title',
+        content: 'Content',
+        date: '2026-08-12 10:00:00.000',
+        important: true,
+        category: 'work',
+      );
+
+      final json = note.toJson();
+      final restored = Note.fromJson(json);
+
+      expect(restored.id, '123');
+      expect(restored.title, 'Title');
+      expect(restored.content, 'Content');
+      expect(restored.date, '2026-08-12 10:00:00.000');
+      expect(restored.important, true);
+      expect(restored.category, 'work');
+    });
+
+    test('legacy category values normalize to the canonical default', () {
+      expect(Note.fromJson({'category': 'none'}).category, 'nuage');
+      expect(Note.fromJson({'category': 'neutral'}).category, 'nuage');
+      expect(Note.fromJson({'category': ''}).category, 'nuage');
+      expect(Note.fromJson({'category': 'menthe'}).category, 'menthe');
+    });
+
+    test('serializes and deserializes attachments', () {
+      final note = Note(
+        id: '1',
+        title: 'a',
+        attachments: <String>['x.txt', 'y.pdf'],
+      );
+      final restored = Note.fromJson(note.toJson());
+      expect(restored.attachments, <String>['x.txt', 'y.pdf']);
+    });
+
+    test('serializes and deserializes coverImage', () {
+      final note = Note(
+        id: '1',
+        title: 'a',
+        coverImage: 'image.png',
+      );
+      final restored = Note.fromJson(note.toJson());
+      expect(restored.coverImage, 'image.png');
+    });
+
+    test('missing attachments default to an empty list', () {
+      expect(Note.fromJson(<String, dynamic>{}).attachments, isEmpty);
+    });
+
+    test('important is preserved when false', () {
+      final note = Note(id: '1', title: 'a', important: false);
+      final restored = Note.fromJson(note.toJson());
+      expect(restored.important, false);
+    });
+
+    test('missing fields have safe default values', () {
+      final restored = Note.fromJson(<String, dynamic>{});
+      expect(restored.id, '');
+      expect(restored.important, false);
+      expect(restored.category, 'nuage');
+      expect(restored.isArchived, isFalse);
+      expect(restored.archivedAt, isNull);
+    });
+
+    test('serializes and deserializes the archive fields', () {
+      final note = Note(
+        id: '1',
+        title: 'a',
+        isArchived: true,
+        archivedAt: '2026-08-14 10:00:00.000',
+      );
+
+      final restored = Note.fromJson(note.toJson());
+
+      expect(restored.isArchived, isTrue);
+      expect(restored.archivedAt, '2026-08-14 10:00:00.000');
+      // A folder cannot be archived.
+      expect(Folder(id: 'f').isArchived, isFalse);
+      expect(Folder(id: 'f').archivedAt, isNull);
+    });
+
+    test('createdAt and updatedAt default to the date', () {
+      final note = Note(id: '1', date: '2026-08-12 10:00:00.000');
+      expect(note.createdAt, '2026-08-12 10:00:00.000');
+      expect(note.updatedAt, '2026-08-12 10:00:00.000');
+    });
+
+    test('serializes and deserializes createdAt and updatedAt', () {
+      final note = Note(
+        id: '1',
+        date: '2026-08-12 10:00:00.000',
+        createdAt: '2026-08-01 09:00:00.000',
+        updatedAt: '2026-08-13 11:00:00.000',
+      );
+
+      final restored = Note.fromJson(note.toJson());
+
+      expect(restored.createdAt, '2026-08-01 09:00:00.000');
+      expect(restored.updatedAt, '2026-08-13 11:00:00.000');
+    });
+
+    test('rows without createdAt/updatedAt fall back to the date', () {
+      final restored = Note.fromJson(<String, dynamic>{
+        'id': '1',
+        'date': '2026-08-12 10:00:00.000',
+      });
+
+      expect(restored.createdAt, '2026-08-12 10:00:00.000');
+      expect(restored.updatedAt, '2026-08-12 10:00:00.000');
+    });
+  });
+
+}

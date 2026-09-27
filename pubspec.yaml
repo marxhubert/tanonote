@@ -1,0 +1,112 @@
+name: tano
+description: TanoNote - Notes, tasks and projects manager.
+publish_to: 'none'
+version: 1.0.0-beta
+
+environment:
+  sdk: '>=3.8.0 <4.0.0'
+
+dependencies:
+  sentry_flutter: ^9.30.0
+  flutter:
+    sdk: flutter
+
+  path_provider: ^2.1.5
+  shared_preferences: ^2.5.3
+  package_info_plus: ^10.2.1
+  material_symbols_icons: ^4.2960.0
+  url_launcher: ^6.3.2
+  # Play In-App Updates, Android only: the store owns the update, we just ask.
+  in_app_update: ^5.0.0
+  path: ^1.9.0
+  get_it: ^8.0.3
+  uuid: ^4.5.1
+  file_picker: ^12.2.0
+  open_filex: ^4.7.0
+  local_auth: ^3.0.2
+  sqflite_sqlcipher: ^3.4.1
+  flutter_secure_storage: ^11.1.0
+  cryptography: ^2.9.0
+  archive: ^4.2.0
+
+dev_dependencies:
+  sentry_dart_plugin: ^3.4.0
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.7
+  path_provider_platform_interface: ^2.1.2
+  sqflite_common_ffi: ^2.3.0
+
+# Native splash screen (Android + iOS), generated with:
+#   dart run flutter_native_splash:create
+flutter_native_splash:
+  # Shared website/app paper colors, also used by the in-app splash.
+  color: "#f2ebdc"
+  color_dark: "#18140e"
+  # Two images, placed by the platform itself: the mark, which every platform
+  # centres, and the name, which it pins to the bottom edge. The mark is the
+  # same disc in both themes, so it needs one file and no `image_dark`.
+  image: assets/splash_logo.png
+  branding: assets/splash_branding.png
+  branding_dark: assets/splash_branding_dark.png
+  android_12:
+    color: "#f2ebdc"
+    color_dark: "#18140e"
+    # Android 12+ masks the icon to a centered circle and draws the branding
+    # at the bottom on its own.
+    image: assets/splash_logo_android12.png
+    branding: assets/splash_branding.png
+    branding_dark: assets/splash_branding_dark.png
+  web: false
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  # iOS does not come from here: the Icon Composer document at
+  # ios/AppIcon.icon is wired into the Xcode project and supersedes the PNG
+  # set, covering every size and appearance (light, dark, tinted).
+  ios: false
+  image_path: "assets/launcher_icon.png"
+  # Adaptive icon (Android 8+): the mark alone on a black background, so the
+  # launcher masks it to its own shape instead of shrinking the square PNG.
+  # The foreground keeps the mark's proportion; the plugin insets it by 16%.
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "assets/launcher_icon_foreground.png"
+  # Android 13+ themed icons: the system recolours this layer, so it is the
+  # same single-colour mark.
+  adaptive_icon_monochrome: "assets/launcher_icon_foreground.png"
+
+flutter:
+  uses-material-design: true
+
+  fonts:
+    - family: TanoSerif
+      fonts:
+        - asset: assets/fonts/NotoSerif-Regular.ttf
+        - asset: assets/fonts/NotoSerif-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/NotoSerif-Italic.ttf
+          style: italic
+        - asset: assets/fonts/NotoSerif-BoldItalic.ttf
+          weight: 700
+          style: italic
+
+  assets:
+    - assets/config/malagasy_refs.json
+    - assets/icons/Ghozi_Muhtarom/
+    # The legal notices the Licenses page shows: the project licence and the
+    # font licence. Both files stay where they belong, and are bundled as-is.
+    - LICENSE
+    - assets/fonts/NotoSerif-LICENSE.txt
+
+# Crash-report symbol upload: keeps release stack traces readable. Credentials
+# come from the release environment (or an ignored properties file), and it only
+# runs on a release build.
+sentry:
+  upload_debug_symbols: true
+  # Web only; TanoNote ships on Android and iOS.
+  upload_source_maps: false
+  # The project and organisation are named in the release environment.

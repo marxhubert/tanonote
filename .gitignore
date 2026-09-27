@@ -1,0 +1,74 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# Freebuff (local workspace data, not part of the project)
+.freebuff/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+
+# Xcode build artifacts (DerivedData produced by flutter run / Xcode)
+/ios/build/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# Web related
+lib/generated_plugin_registrant.dart
+
+# Exceptions to above rules.
+!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# Sentry auth token. Never commit it.
+sentry.properties
+
+# The identity a local build injects (see lib/shared/config/app_config.dart),
+# and also what --dart-define-from-file reads. Never commit the filled file:
+# this repository is public. identity.json.dist is the template that is.
+identity.json
+
+# The site's own values (author, links, store URLs). Never commit the filled
+# file: it is injected at deploy time from the SITE_CONFIG_JSON secret.
+# site/config.json.dist is the template that is committed.
+site/config.json
+
+# Xcode keeps a second copy of the SwiftPM lockfile inside the project's own
+# workspace. The reference one lives in Runner.xcworkspace and is committed.
+/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/

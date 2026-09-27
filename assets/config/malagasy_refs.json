@@ -1,0 +1,1619 @@
+{
+  "about": {
+    "keyword": "momba",
+    "expression": "Ny momba azy",
+    "description": "Ny amin' ny, mikasika ny...: Niresaka momba ny fitsapana hevibahoaka izahay",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "about_cta": {
+    "keyword": "hihazona",
+    "expression": "Ampio izahay hampandroso sy hanatsara hatrany ny TanoNote! Ny fanohananao dia mamela anay hihazona ity fitaovana ity ho maimaim-poana sy hanaja ny tsiambaratelon'ny rehetra. Azonao atao ireto manaraka ireto:",
+    "description": "morphological form of ihazonana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "about_description": {
+    "keyword": "angona",
+    "expression": "Ny TanoNote dia fitaovana fanoratana tsotra, azo antoka ary haingana natao hanampiana anao amin'ny fandaminana ny hevitrao sy ny fifantohana. Omenay lanja ny tsiambaratelonao ka ao anatin'ny findainao ihany no mipetraka ny angon-drakitrao rehetra.",
+    "description": "Milaza hevitra fivoriana, fitobiana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "about_more": {
+    "keyword": "Azonao atao koa (sady tsy mila anarana) ny:",
+    "expression": "Azonao atao koa (sady tsy mila anarana) ny:",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "about_premium": {
+    "keyword": "Tolotra",
+    "expression": "Tolotra Premium",
+    "description": "Fanomezana omena ny mpaka sy ny mpanatitra mpanambady ; Fanomezam-panànana (na vitsivitsy aminy fotsiny) ataon' ny ray aman-dreny aloha ben' ny hahafatesany: Nataon-drainy tolotra ho an' i Faralahy ilay tanimbary erý ambony andrefana ; Fandrosoana zavatra olona ho mari-panajana na fitiavana: Rehefa vita ny tolotra fehezam-boninkazo, dia nitsangana ny manam-pahefana hikabary",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "add": {
+    "keyword": "Hanampy",
+    "expression": "Hanampy",
+    "description": "morphological form of anampy",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "add_description": {
+    "keyword": "visavisa",
+    "expression": "Hanampy visavisa",
+    "description": "Fitanisanisàna ; Filazalazana hatramin' izay antsipiriany madinika kely indrindra ; Enti-milaza ny teny mamohafoha ny lasa ombam-pitarainana fatratra. ; famerenana ao an-tsaina amin'ny antsipiriany ny lasa",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "add_folder": {
+    "keyword": "fonoka",
+    "expression": "Hanampy fonoka",
+    "description": "Fifonosana tsara ao anaty lamba mba tsy handrenesana hatsiaka",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "add_note": {
+    "keyword": "tano",
+    "expression": "Hanampy tano",
+    "description": "Entina milaza ny naoty ato amin'ity rindrambaiko ity.",
+    "hasWebsiteRef": false,
+    "shouldDisplay": true
+  },
+  "add_task": {
+    "keyword": "kasa",
+    "expression": "Hanampy kasa",
+    "description": "Mitovy hevitra amin' ny saika: kely foana sisa tsy...: Kasa nianjera tao anaty hady aho raha tsy nahatana ilay vatan-kazo maniry eo ambony andrefana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "add_task_item": {
+    "keyword": "singa",
+    "expression": "Hanampy singa",
+    "description": "Irery: Nahoana no mandeha singany izato izy? fa nankaiza Ramatoa? ; Ny ilany, ny iray amin' ireo zavatra iray aman' olona nairay lomisy: Ento atý ny singan-kiraroko ao ambany farafara ao ; Enti-milaza ny tenan-javatra alaina tsirairay: Hakako afokasoka tranony iray ve ianao? -- Tsia, singany iray ihany entina",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "all_docs": {
+    "keyword": "Izy rehetra",
+    "expression": "Izy rehetra",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "all_docs_selected": {
+    "keyword": "rakitra",
+    "expression": "Voafantina daholo ireo rakitra {count}",
+    "description": "Vola angonina tsikelikely hatao tahiry: Manaova rakitra raha ta hahazo bisikileta ianao amin' ny faran' ny taona ; Harena, zava-tsoa sarobidy voatahiry: Rakitra lehibe ho an' ny firenena ireo sangan' asan' ny mpanoratra ao aminy ; Toerana misy ny vola angonina: Namahy rakitra Ikoto omaly ; Vola tantazana amin' ny olona vory maro be tsirairay, indrindra any ampiangonana: Tsy hisy vidimpidirana fa rakitra no hotantazana eo am-baravarana.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "all_folders_selected": {
+    "keyword": "Voafantina",
+    "expression": "Voafantina daholo ireo fonoka {count}",
+    "description": "voafantina avokoa ny teny ampiasainy. ; Hanoro anao ny masomboly voafantina izy.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "all_notes_selected": {
+    "keyword": "Voafantina daholo ireo tano {count}",
+    "expression": "Voafantina daholo ireo tano {count}",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "all_tasks_selected": {
+    "keyword": "Voafantina daholo ireo kasa {count}",
+    "expression": "Voafantina daholo ireo kasa {count}",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "archive_done": {
+    "keyword": "Voatahiry",
+    "expression": "Voatahiry",
+    "description": "invariant, conservé",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "archive_empty": {
+    "keyword": "poakaty",
+    "expression": "Tahiry poakaty",
+    "description": "poakaty sady feno rivotra izy; ; Mivelona amin' ny fanantenana ny olona ka na fanantenana poakaty aza dia lasa foana!",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "attachment": {
+    "keyword": "Anentana",
+    "expression": "Anentan-koja",
+    "description": "Fehezan-javatra antonona hoentin' ny olona iray indray mandeha: Tsy zakako io anentan-kitay io ; entana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "attachments": {
+    "keyword": "koja",
+    "expression": "Anentan-koja",
+    "description": "Fitandremana manokana atao amin' ny zavatra, mitovy amin' ny hoe karakara, saingy ampiasaina kokoa kosa raha zavatra madinika no tenenina na fikarakarana amin' ny lafiny madinidinika: Ianao no hiandraikitra ny kojan-tokantrano ; Andinindininy: Tsy ho haiko ny hilaza izao kojany rehetra izao.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "auth_reason": {
+    "keyword": "Hamarino ny zonao hijery tiy tano ity",
+    "expression": "Hamarino ny zonao hijery tiy tano ity",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "back": {
+    "keyword": "Hiverina",
+    "expression": "Hiverina",
+    "description": "morphological form of miverina",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "cancel": {
+    "keyword": "Atsaharo",
+    "expression": "Atsaharo",
+    "description": "atsaharo izany fomba tsy mety fanaonao izany",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "chars": {
+    "keyword": "litera",
+    "expression": "litera",
+    "description": "Tarehintsoratra: Misy litera iraika amby roapolo amin' ny abidy malagasy",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "clear": {
+    "keyword": "Fafao",
+    "expression": "Fafao",
+    "description": "fafao tsara ny efitrano fandriana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "close_button": {
+    "keyword": "Hidio",
+    "expression": "Hidio",
+    "description": "Ividiano gadanà ny vatako, hidio ary tahirizo any amin' ialahy ny fanalahidy. ; hidio ny trano Ramatoa fa izaho handry any aminay",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "completed_tasks": {
+    "keyword": "Kasa vita",
+    "expression": "Kasa vita",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "confirm_question": {
+    "keyword": "Tohizina tokoa ve?",
+    "expression": "Tohizina tokoa ve?",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "content": {
+    "keyword": "Votoatiny",
+    "expression": "Votoatiny",
+    "description": "lavina aza fa voasaina tokoa ny votoatiny . ; Nitomany nanala ny lohany i Voahirana, rehefa nahalala hatramin'ny votoatiny ny tena marina.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "content_empty": {
+    "keyword": "votoatiny",
+    "expression": "Tsy maintsy fenoina ny votoatiny",
+    "description": "lavina aza fa voasaina tokoa ny votoatiny . ; Nitomany nanala ny lohany i Voahirana, rehefa nahalala hatramin'ny votoatiny ny tena marina.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "corrupted_image": {
+    "keyword": "vanona",
+    "expression": "Sary tsy vanona",
+    "description": "Mahomby: Tena vanona tsara ny voaloboka tamin' ny taona ito ; Mandroso: Tsy mety vanona ny varotra eto amin' ity faritany ity ; Manjary: Tsy misy vanona ny akoho nompiany ; Misy vidiny, mahatanteraka ny ilana azy, tomombana amin' ny maha-izy azy: Tsy vanona intsony ity penina ity ~ Mba olom-banona ; To, tanteraka: Tsy nisy vanona ny fikasany ka kivy tanteraka izy",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "data_transfer_title": {
+    "keyword": "Aiditra",
+    "expression": "Aiditra & avoaka",
+    "description": "Atsofoka ao anatin' ny...: Naiditro ny fanalahidy fa tsy nety ; Ampidirina, alatsaka: Naiditro ao amin' ilay sekoly ao akaikinay ny zanako",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "delete": {
+    "keyword": "Fafao",
+    "expression": "Fafao",
+    "description": "fafao tsara ny efitrano fandriana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "delete_all_notes": {
+    "keyword": "Hanary ireo tano rehetra",
+    "expression": "Hanary ireo tano rehetra",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "delete_folder": {
+    "keyword": "Manary fonoka",
+    "expression": "Manary fonoka",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "delete_folder_question": {
+    "keyword": "Fonoka mihazon-javatra {count} ity. Hariana miaraka aminy daholo ve?",
+    "expression": "Fonoka mihazon-javatra {count} ity. Hariana miaraka aminy daholo ve?",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "delete_locked_error": {
+    "keyword": "voahidy",
+    "expression": "Tsy azo fafana ny tano voahidy",
+    "description": "Nalala-tsaina izy, tsy voahidy tao anatina rijan-kevitra. ; Nony voahidy ny trano dia lasa izy nihazakazaka nitsoaka any amin'i Fandrava hilaza izao toe-javatra izao, ka navadiny ny fomba filaza azy",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "delete_note": {
+    "keyword": "Hanary tano",
+    "expression": "Hanary tano",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "delete_notes": {
+    "keyword": "Hanary ireo tano {count}",
+    "expression": "Hanary ireo tano {count}",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "delete_photo": {
+    "keyword": "Hanala sary",
+    "expression": "Hanala sary",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "deleted": {
+    "keyword": "voafafa",
+    "expression": "voafafa",
+    "description": "Ny fiafarany dia voafafa tanteraka fotsiny izao ny fandikan-dalàna natao. ; Rehefa voafafa ny trano, dia nanokom-bary izy, ka tsy tamin' ny vilany no nandrahoiny, fa tamin' ny tavy.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "desc_archive": {
+    "keyword": "Archived notes and tasks leave Home and their folders until you unarchive them.",
+    "expression": "Archived notes and tasks leave Home and their folders until you unarchive them.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "desc_bug_report": {
+    "keyword": "Alefaso raha tianao ny tatitra ara-teknika tsy misy famantarana ny momba anao na ireo zavatrao. Azonao ajanona amin'ny fotoana rehetra ny fanekenao.",
+    "expression": "Alefaso raha tianao ny tatitra ara-teknika tsy misy famantarana ny momba anao na ireo zavatrao. Azonao ajanona amin'ny fotoana rehetra ny fanekenao.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "desc_delete_data": {
+    "keyword": "fongana",
+    "expression": "Ho fongana tanteraka avokoa ny zavatra rehetra raha tohizana izao.",
+    "description": "Tsy misy tavela, rava, levona: Fongana tamin' ny rivo-doza ny varinay ; Lany nolanina, lasa daholo.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "desc_delete_prefs": {
+    "keyword": "Hamerina ny zava-drehetra (loko, fiteny, lamina) ho amin'ny toa vao izany.",
+    "expression": "Hamerina ny zava-drehetra (loko, fiteny, lamina) ho amin'ny toa vao izany.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "desc_export_before_reset": {
+    "keyword": "mimpody",
+    "expression": "Tandremo fa tsy mimpody intsony izay voafafa. Tehirizo aloha izay angona.",
+    "description": "miverina ; Miverina amin' ny toerana nielana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "desc_export_data": {
+    "keyword": "koja",
+    "expression": "Avoahy ho rakitra .tano ny tano sy ny kojany, voahidy na tsia.",
+    "description": "Fitandremana manokana atao amin' ny zavatra, mitovy amin' ny hoe karakara, saingy ampiasaina kokoa kosa raha zavatra madinika no tenenina na fikarakarana amin' ny lafiny madinidinika: Ianao no hiandraikitra ny kojan-tokantrano ; Andinindininy: Tsy ho haiko ny hilaza izao kojany rehetra izao.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "desc_import_data": {
+    "keyword": "Aidiro",
+    "expression": "Aidiro ny tano sy ny kojany avy amin'ny rakitra .tano. Tsy ho very ny efa ao.",
+    "description": "imperative of passive verb aiditra",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "desc_recycle_bin": {
+    "keyword": "Ireo tano voafafa dia voatahiry ao amin'ny fitoeram-pako mandritra ny 30 andro alohan'ny hamafana azy tanteraka.",
+    "expression": "Ireo tano voafafa dia voatahiry ao amin'ny fitoeram-pako mandritra ny 30 andro alohan'ny hamafana azy tanteraka.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "desc_reset_data": {
+    "keyword": "famonganana",
+    "expression": "Ny famonganana ny angona dia hamafa tanteraka ny zavatra sy lamina rehetra nataonao ka tsy ho afaka ampody intsony.",
+    "description": "Fandidiana (zavatra) ka atao didiny lehibe",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "description": {
+    "keyword": "Visavisa",
+    "expression": "Visavisa",
+    "description": "Fitanisanisàna ; Filazalazana hatramin' izay antsipiriany madinika kely indrindra ; Enti-milaza ny teny mamohafoha ny lasa ombam-pitarainana fatratra. ; famerenana ao an-tsaina amin'ny antsipiriany ny lasa",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "description_limit": {
+    "keyword": "tarehintsoratra",
+    "expression": "Voafetra ho tarehintsoratra 500 ihany ny visavisa.",
+    "description": "lettre",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "developer_reset": {
+    "keyword": "Reset developer",
+    "expression": "Reset developer",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "developer_reset_failed": {
+    "keyword": "Tsy vita ny famerenana. Mety efa niova ny angona sasany. Andramo indray hampidirana ny angona andrana rehetra.",
+    "expression": "Tsy vita ny famerenana. Mety efa niova ny angona sasany. Andramo indray hampidirana ny angona andrana rehetra.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "doc": {
+    "keyword": "rakitra",
+    "expression": "rakitra",
+    "description": "Vola angonina tsikelikely hatao tahiry: Manaova rakitra raha ta hahazo bisikileta ianao amin' ny faran' ny taona ; Harena, zava-tsoa sarobidy voatahiry: Rakitra lehibe ho an' ny firenena ireo sangan' asan' ny mpanoratra ao aminy ; Toerana misy ny vola angonina: Namahy rakitra Ikoto omaly ; Vola tantazana amin' ny olona vory maro be tsirairay, indrindra any ampiangonana: Tsy hisy vidimpidirana fa rakitra no hotantazana eo am-baravarana.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "docs": {
+    "keyword": "rakitra",
+    "expression": "rakitra",
+    "description": "Vola angonina tsikelikely hatao tahiry: Manaova rakitra raha ta hahazo bisikileta ianao amin' ny faran' ny taona ; Harena, zava-tsoa sarobidy voatahiry: Rakitra lehibe ho an' ny firenena ireo sangan' asan' ny mpanoratra ao aminy ; Toerana misy ny vola angonina: Namahy rakitra Ikoto omaly ; Vola tantazana amin' ny olona vory maro be tsirairay, indrindra any ampiangonana: Tsy hisy vidimpidirana fa rakitra no hotantazana eo am-baravarana.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "docs_selected": {
+    "keyword": "Rakitra {count}/{total} voafantina",
+    "expression": "Rakitra {count}/{total} voafantina",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "edit": {
+    "keyword": "Ovay",
+    "expression": "Ovay",
+    "description": "tavy, tevy ala",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "edit_note": {
+    "keyword": "Hanova tano",
+    "expression": "Hanova tano",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "edit_task": {
+    "keyword": "Hanova kasa",
+    "expression": "Hanova kasa",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "empty": {
+    "keyword": "Foana",
+    "expression": "Foana",
+    "description": "Tsy misy na inona na inona ao anatin' ny, babangoana: Tanàna foana ; Tsy misy vidiny; tsy misy lanjany; maivana; tslnontsinona: Hevi-poana izany ; Heverina ho toy ny tsy misy antony, tsy azo ekena, tsy manana ny maha-ara-dalàna azy: Foana ny fangatahanao / Foana ny fanambadiany satria noterena razazavavy ; Very daholo, levona: Foana ny haren-dRakoto ; Tsy tanteraka: Foana ny fikosako noho io loza tsy nampoizina io ; Tsy misy vokany: Manasatena foana ianao manao an' io fa tsy raharahain' ny ankizy akory ; Tsy an-kijanona: Miasa foana izy na marary aza",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "empty_trash": {
+    "keyword": "babangoana",
+    "expression": "Daba-pako babangoana",
+    "description": "Foana tsy misy na inona na inona ao anatiny; nalana daholo ny fanaira aman' entana tao anatiny: Nony lasa ianareo, dia efitrano babangoana sisa nitahiry ny fahatsiarovana anareo",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "export_action": {
+    "keyword": "Avoaka",
+    "expression": "Avoaka",
+    "description": "Roahina: Avoahy any io alika io ; Asaina hiala ny trano: Navoaka ny mpiasa fa hasiana D.D.T. ao an-trano ; Esorina avy ao anaty: Navoaka daholo ny zavatra rehetra tao anaty vatany ; Lazaina: Nanohina ny fon' ny olona ny teny navoakan' ny vavany ; Lazaina am-pahibemaso: Misy didy vao navoakan' ny fanjakana vao haingana momba ny halatra omby ; Aposaka: Avoahy tsara eto anoloan' ny fitsarana izay zavatra fantatrareo ; Aseho voalohany ho hitan' ny olona: Itỳ no boky faharoapolo navoakako",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "export_data": {
+    "keyword": "Avoaka ny angona",
+    "expression": "Avoaka ny angona",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "export_done": {
+    "keyword": "tomombana",
+    "expression": "Tomombana soa aman-tsara.",
+    "description": "Vita tsara tanteraka, lavorary: Tomombana ny fanomananay ka dia hatomboka ny lanonana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "export_encrypt": {
+    "keyword": "hidim-boay",
+    "expression": "Hatao hidim-boay",
+    "description": "Nom général des charmes ou talismans sensés protégés contre la dent des crocodiles. La plupart des accidents arrivent parce que les porteurs de ces amulettes font preuve d'une folle témérité devant les sauriens, se croyant absolument protégés.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "export_failed": {
+    "keyword": "Nisy olana ny famoahana.",
+    "expression": "Nisy olana ny famoahana.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "export_locked_required": {
+    "keyword": "ankaromiafina.",
+    "expression": "Misy tano mihidy ao ka tsy maintsy mila ankaromiafina.",
+    "description": "Enti-milaza zavatra tsy tiana ho fantatr' olona, afenina mafy; tsiambaratelo: Tsy tratra namosaka ny ankaromiafiny izy raha vao nahare izany teny izany",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "export_password": {
+    "keyword": "Ankaromiafina",
+    "expression": "Ankaromiafina",
+    "description": "Enti-milaza zavatra tsy tiana ho fantatr' olona, afenina mafy; tsiambaratelo: Tsy tratra namosaka ny ankaromiafiny izy raha vao nahare izany teny izany",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "export_password_hint": {
+    "keyword": "8 litera farafahakeliny",
+    "expression": "8 litera farafahakeliny",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "feedback_haptics": {
+    "keyword": "Hovitra",
+    "expression": "Hovitra",
+    "description": "Fipararetana noho ny fanaviana na ny hatsiaka na ny tahotra",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "feedback_sound": {
+    "keyword": "Feo",
+    "expression": "Feo",
+    "description": "Izay ren' ny sofina avy amin' ny fipararetran' ny zavatra iray entin' ny rivotra ka tonga mipaika ny hozatra madinika kiritika kely ao amin' ny sofina: Samy hafa ny feon' ny vato sy ny an' ny vy velezina ; (Misy zavatra telo tsara homarihina ny amin' ny feo: ny haavony, ny hamafiny, ary ny fikarantsany)",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "filter_all": {
+    "keyword": "Daholo",
+    "expression": "Daholo",
+    "description": "Rehetra tsy misy avahana: Nihoraka daholo ny mpianatra . (Marihina fa sady mamaritra ny matoanteny ny daholo no mifandray amin' ny teny lazaina: Nihinana paiso daholo ny mpianatra; Nohanin' ny mpianatra daholo ny paiso . Araka izany dia mitovy hevitra amin' ny rehetra ihany izy saingy ny rehetra mpamaritra anarana ka atao manaraka ny anarana mandrakariva, ary izany koa matetika no mahatonga ny olona hampiasa azy roa miaraka: Nihinana paiso daholo ny mpianatra rehetra; nohanin' ny mpianatra daholo ny paiso rehetra)",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "filter_notes": {
+    "keyword": "Tano",
+    "expression": "Tano",
+    "description": "tano tsara ny tady sao mianjera ianao ; tano ny azo fa sarotra ny mita",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "filter_tasks": {
+    "keyword": "Kasa",
+    "expression": "Kasa",
+    "description": "Mitovy hevitra amin' ny saika: kely foana sisa tsy...: Kasa nianjera tao anaty hady aho raha tsy nahatana ilay vatan-kazo maniry eo ambony andrefana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "find_in_note": {
+    "keyword": "Zahavo",
+    "expression": "Zahavo ao anaty tano",
+    "description": "imperative of passive verb zahavana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "find_in_tasks": {
+    "keyword": "Zahavo ao anaty kasa",
+    "expression": "Zahavo ao anaty kasa",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "fiteny": {
+    "keyword": "Fiteny",
+    "expression": "Fiteny",
+    "description": "Teny iombonan' antokon' olona iray, izay saika mandrakariva iray firenena: Mirindra aoka izany ny fiteny malagasy. ; Fomba entina miteny: Mahitsy fiteny io zaza io izany ; Zavatra lazaina: Niova fiteny ianao izany ; Fomba na baiko atao fifandraisana: Fiteny tsy fantatra ny an' ny biby ; Azo tenenina: Teny tsy fiteny eo imason' olom-pady izany",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "folder": {
+    "keyword": "fonoka",
+    "expression": "fonoka",
+    "description": "Fifonosana tsara ao anaty lamba mba tsy handrenesana hatsiaka",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "folder_empty": {
+    "keyword": "Fonoka poakaty",
+    "expression": "Fonoka poakaty",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "folder_locked": {
+    "keyword": "Voahidy ny fonoka",
+    "expression": "Voahidy ny fonoka",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "folder_name": {
+    "keyword": "Anaran'ny fonoka",
+    "expression": "Anaran'ny fonoka",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "folder_unlocked": {
+    "keyword": "Novahana ny fonoka",
+    "expression": "Novahana ny fonoka",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "folders": {
+    "keyword": "fonoka",
+    "expression": "fonoka",
+    "description": "Fifonosana tsara ao anaty lamba mba tsy handrenesana hatsiaka",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "folders_group": {
+    "keyword": "Fonoka",
+    "expression": "Fonoka",
+    "description": "Fifonosana tsara ao anaty lamba mba tsy handrenesana hatsiaka",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "folders_selected": {
+    "keyword": "Fonoka {count}/{total} voafantina",
+    "expression": "Fonoka {count}/{total} voafantina",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "home": {
+    "keyword": "anjaika",
+    "expression": "Fianjaikana",
+    "description": "Fahavoriana lehibe manetriketrika iraratana amin' ny haingo; lanonana.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "import_clear_warning": {
+    "keyword": "Mibanaka",
+    "expression": "Mibanaka avokoa ireo rakitra havoaka. Asio ankaromiafina.",
+    "description": "Mitovy hevitra amin' ny mibanabana (tsarovy ny fitovizan-kevitry ny teny verindroa sy ny teny tsotra niaviany mitovana ka/tra/na, mivilavila sy mivilana)",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "import_data": {
+    "keyword": "Hampiditra angona",
+    "expression": "Hampiditra angona",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "import_done": {
+    "keyword": "{added} tano nampidirina, {folders} fonoka, {skipped} nolavina, {unlocked} tsisy hidiny.",
+    "expression": "{added} tano nampidirina, {folders} fonoka, {skipped} nolavina, {unlocked} tsisy hidiny.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "import_failed": {
+    "keyword": "Tsy tomombana ny fampidirana",
+    "expression": "Tsy tomombana ny fampidirana",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "import_password_message": {
+    "keyword": "Mitaky ankaromiafina ity famoahana ity.",
+    "expression": "Mitaky ankaromiafina ity famoahana ity.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "import_password_title": {
+    "keyword": "Famoahana voahidy",
+    "expression": "Famoahana voahidy",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "import_too_large": {
+    "keyword": "Mihoatra ny fetra 64 Mo ity rakitra ity.",
+    "expression": "Mihoatra ny fetra 64 Mo ity rakitra ity.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "important": {
+    "keyword": "Zava-dehibe",
+    "expression": "Zava-dehibe",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "labs": {
+    "keyword": "Andrana",
+    "expression": "Andrana",
+    "description": "Fampiasana zavatra mialoha mba hitsapana ny toetrany na ny fandehany: Nampandehanina ilay fiarakodia vao novidina, nefa tsy aisy dia nampanaovina azy fa vao andrana fotsiny ; Fitsapana fotsiny fa tsy mbola tena izy, fanalam-botso-tanana: Tsy kanety akory ny fanambadiana ha ndeha hasiana andrana? ; Fihinanana kely amin' ny zavatra iray mba hahalalana ny tsirony: Aoka izay fa lany andrana eo ity laoka. ; fitsapana mialoha ny tena izy ; fiezahan'ny mpanoratra hamakafaka ireo fanontaniana isan-karazany iray na maromaro",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "labs_hint": {
+    "keyword": "kinova",
+    "expression": "Fitaovana ho an'ny mpamorona. Amin'ny kinova debug ihany, tsy amin'ny kinova avoaka.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "labs_sentry_sent": {
+    "keyword": "Nalefa tany amin'ny Sentry ny hadisoana andrana.",
+    "expression": "Nalefa tany amin'ny Sentry ny hadisoana andrana.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "labs_sentry_test": {
+    "keyword": "Alefaso ny andrana misy fahadisoana",
+    "expression": "Alefaso ny andrana misy fahadisoana",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "labs_sentry_unavailable": {
+    "keyword": "Tsy mandeha ny tatitra momba ny olana. Velomy aloha vao manandrana indray.",
+    "expression": "Tsy mandeha ny tatitra momba ny olana. Velomy aloha vao manandrana indray.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "language_references": {
+    "keyword": "Rakiteny",
+    "expression": "Rakiteny tsotra",
+    "description": "rakibolana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "licenses": {
+    "keyword": "Lisansa",
+    "expression": "Lisansa",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "load_error_message": {
+    "keyword": "rindrambaiko",
+    "expression": "Tsy miainga ilay rindrambaiko. Mba avereno indray.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "load_error_title": {
+    "keyword": "fahana",
+    "expression": "Tsy tomombana ny fahan-tano",
+    "description": "Tohana eo ivelan' ny zavatra iray mba hananany hery bebe kokoa ; Fifikirana amin' ny zavatra, fanankinana mafy ny tongotra mba tsy hianjera",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "lock_requires_device_lock": {
+    "keyword": "efijery",
+    "expression": "Mametraha hidy efijery (kaody na biometrika) vao afaka manidy naoty",
+    "description": "Ny dikan'ny hoe efijery amin'ny teny malagasy dia ny écran (amin'ny teny frantsay) na ny screen (amin'ny teny anglisy). Efijery kasihina = Écran tactile / Touch screen. Efijery be.",
+    "hasWebsiteRef": false,
+    "shouldDisplay": true
+  },
+  "lock_unavailable_title": {
+    "keyword": "Tsy azo hidiana ny naoty",
+    "expression": "Tsy azo hidiana ny naoty",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "menu_date": {
+    "keyword": "Daty",
+    "expression": "Daty",
+    "description": "Lalàna tamin' ny daty oviana izany? ; Tsy niova io daty io raha tsy nianjera asabotsy na alahady. ; Iny ilay andro voalohan' ny Novembre, ilay daty kely ahatsiarovana loatra ny ngidin' ny namoiza-malala.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "menu_descending": {
+    "keyword": "Mifanohitra",
+    "expression": "Mifanohitra",
+    "description": "Mifanalavitra be toy ny atsimo sy avaratra, mifanipaka, mifandaka: Mifanohitra ny mamy sy ny mangidy ; Tsy mitovy hevitra, miady: Mifanohitra ny Tandrefana sy ny Tatsinanana ; Tsy mifanaraka, tsy mifandrindra: Mifanohitra ny teny lazain' ny vavany sy ny asa ataony ; Tsy mifanaraka amin' ny..,: Mifanohitra amin' ny fitsipiky ny Fikambanana ny nataonao ka horoahina ianao",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "menu_english": {
+    "keyword": "Anglisy",
+    "expression": "Anglisy",
+    "description": "Ny firenena monina any amin' ny tanin' i Englanda na Angletera: Monge-mahalatsaka izay ny Anglisy ; Momba an' i Angletera na an' i Angletera na avy any Angletera: Anisan' ny teny sarotra tononina ny teny anglisy",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "menu_favorites": {
+    "keyword": "Zava-dehibe",
+    "expression": "Zava-dehibe",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "menu_feedback": {
+    "keyword": "Hetsika sy soratra",
+    "expression": "Hetsika sy soratra",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "menu_french": {
+    "keyword": "Frantsay",
+    "expression": "Frantsay",
+    "description": "Ny firenena tompon-tany any amin' ny tanin' i Frantsa: Mahatratra 50 tapitrisa mahery ny isan' ny Frantsay ; Mikasika an' i Frantsa, an' i Frantsa na avy any Frantsa: Anisan' ny teny mazava ary azo ilazana angolan-kevitra ny teny frantsay",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "menu_grid": {
+    "keyword": "Efajoro",
+    "expression": "Efajoro",
+    "description": "Teo anilany nisy karazan-tilikambo efajoro avobe izay nifarana tamin' ny sarina lohan'omby nipetaka tamin' ny lafiny efatra. ; Tsihy madinika amam-polony, efajoro sahabo ho iray zehy no fatao lafika ambony lasitra, ary tena anton-draharaham-behivavy mihitsy ny fandrariana sy ny fanadiovana ireny.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "menu_language": {
+    "keyword": "Fiteny",
+    "expression": "Fiteny",
+    "description": "Teny iombonan' antokon' olona iray, izay saika mandrakariva iray firenena: Mirindra aoka izany ny fiteny malagasy. ; Fomba entina miteny: Mahitsy fiteny io zaza io izany ; Zavatra lazaina: Niova fiteny ianao izany ; Fomba na baiko atao fifandraisana: Fiteny tsy fantatra ny an' ny biby ; Azo tenenina: Teny tsy fiteny eo imason' olom-pady izany",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "menu_left_side": {
+    "keyword": "Ankavia",
+    "expression": "Ankavia",
+    "description": "Nisy tanàna nifefy tamboho tsy dia avo teo ankavianay . ; Nanindry bokotra kely teo ankavian ' ny latabany izy. ; Ny zokinao vavy, monina ao ankavianao dia Samaria mbamin' ny zanany vavy ; Nitsofoka tao anaty fiara ilay zazavavy, fa nipetraka teo ankaviany ilay tovolahy, dia namelona ny milina",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "menu_list": {
+    "keyword": "Lisitra",
+    "expression": "Lisitra",
+    "description": "liste",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "menu_malagasy": {
+    "keyword": "Malagasy",
+    "expression": "Malagasy",
+    "description": "Momba an' i Madagasikara, an' i Madagasikara na avy any Madagasikara: 'Zay nahita tsy hanadino ny hariva malagasy!",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "menu_modified": {
+    "keyword": "Vao novaina",
+    "expression": "Vao novaina",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "menu_sorting": {
+    "keyword": "Lamina",
+    "expression": "Lamina",
+    "description": "Fanaovana izay hisian' ny firindrana, ny fiezahana sy fanaovana izay tsy hahitana korontana; fikarakarana mba ho amin' ny toerany avy ny zavatra.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "menu_theme": {
+    "keyword": "Lafiny",
+    "expression": "Lafiny",
+    "description": "plan; point de vue",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "menu_theme_sort": {
+    "keyword": "Loko",
+    "expression": "Loko",
+    "description": "Sora-javatra: Vony sy maitso tanora ny lokon' ny tranony ; Ranona vovoka noharoina ka mahatonga volon-javatra sy sorany araka ny karazany: Ampifangaroy ireto loko roa ireto fa ho tsara",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "menu_title": {
+    "keyword": "Lohateny",
+    "expression": "Lohateny",
+    "description": "Anarana -- izay matetika teny fohifohy -- entina hilazana boky na toko iray amin' ny boky na koa lahateny famelabelaran-kevitra: \"Mba olom-banona\" no lohateny nalain' ny mpampianatra anay ho voaboasana ; Fifanarahana fa hifamela heloka na hifandefitra na hifanampy.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "more": {
+    "keyword": "Be kokoa",
+    "expression": "Be kokoa",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "moved": {
+    "keyword": "nafindra",
+    "expression": "nafindra",
+    "description": "morphological form of afindra",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "moved_home": {
+    "keyword": "fianjaikana",
+    "expression": "naverina tany amin'ny fianjaikana",
+    "description": "noun",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "moved_to": {
+    "keyword": "nafindra tany amin'ny {folder}",
+    "expression": "nafindra tany amin'ny {folder}",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "my_folders": {
+    "keyword": "Ireo fonoka",
+    "expression": "Ireo fonoka",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "next": {
+    "keyword": "Manaraka",
+    "expression": "Manaraka",
+    "description": "Manjohy: Mitomany hanaraka an-dreniny Ikotokely ; Manao araka ny..,, mitandrina, manatanteraka: Manaraka ny didin' Andriamanitra ; Mandeha amin' ny lavan' ny, sisin' ny, moron' ny: Mandehana manaraka ny valamparia ; Tsy manohitra fa manao araka ny...: Manaraka ny fitongilanan-dratsy ; Momba ny..., miandany amin' ny,..: Manaraka ny fampianaran' i Bouddha ; Avy aoriana, mandimby: Manaraka ny lohataona ny fahavaratra ; Vokatry ny: Manaraka ny heloka ny sazy ; Manao tahaka, maka tahaka: Tsarovy fa hanaraka ny hataonao ny zanakao ; Miady mba hahazo, mitaky amin' ny alalan' ny fitsarana: Tsy misy mahadiso ahy raha manaraka ny anjara lovako aho.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "no_data": {
+    "keyword": "Mbola foana hatreto",
+    "expression": "Mbola foana hatreto",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "no_folder": {
+    "keyword": "foana",
+    "expression": "foana",
+    "description": "Tsy misy na inona na inona ao anatin' ny, babangoana: Tanàna foana ; Tsy misy vidiny; tsy misy lanjany; maivana; tslnontsinona: Hevi-poana izany ; Heverina ho toy ny tsy misy antony, tsy azo ekena, tsy manana ny maha-ara-dalàna azy: Foana ny fangatahanao / Foana ny fanambadiany satria noterena razazavavy ; Very daholo, levona: Foana ny haren-dRakoto ; Tsy tanteraka: Foana ny fikosako noho io loza tsy nampoizina io ; Tsy misy vokany: Manasatena foana ianao manao an' io fa tsy raharahain' ny ankizy akory ; Tsy an-kijanona: Miasa foana izy na marary aza",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "no_note_found": {
+    "keyword": "Tsy nisy raha hita",
+    "expression": "Tsy nisy raha hita",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "no_title": {
+    "keyword": "Tsy misy lohateny",
+    "expression": "Tsy misy lohateny",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "note": {
+    "keyword": "tano",
+    "expression": "tano",
+    "description": "tano tsara ny tady sao mianjera ianao ; tano ny azo fa sarotra ny mita",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "note_deleted": {
+    "keyword": "Voafafa ny tano",
+    "expression": "Voafafa ny tano",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "note_locked": {
+    "keyword": "Voahidy ny tano",
+    "expression": "Voahidy ny tano",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "note_unlocked": {
+    "keyword": "Novahana ny tano",
+    "expression": "Novahana ny tano",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "notes": {
+    "keyword": "tano",
+    "expression": "tano",
+    "description": "tano tsara ny tady sao mianjera ianao ; tano ny azo fa sarotra ny mita",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "notes_group": {
+    "keyword": "Rakitra",
+    "expression": "Rakitra",
+    "description": "Vola angonina tsikelikely hatao tahiry: Manaova rakitra raha ta hahazo bisikileta ianao amin' ny faran' ny taona ; Harena, zava-tsoa sarobidy voatahiry: Rakitra lehibe ho an' ny firenena ireo sangan' asan' ny mpanoratra ao aminy ; Toerana misy ny vola angonina: Namahy rakitra Ikoto omaly ; Vola tantazana amin' ny olona vory maro be tsirairay, indrindra any ampiangonana: Tsy hisy vidimpidirana fa rakitra no hotantazana eo am-baravarana.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "notes_selected": {
+    "keyword": "Tano {count}/{total} voafantina",
+    "expression": "Tano {count}/{total} voafantina",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "ok": {
+    "keyword": "OK",
+    "expression": "OK",
+    "description": "morphological form of oka",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "onboarding_body_1": {
+    "keyword": "aterineto",
+    "expression": "Ampiasao amin'ny fotoana rehetra ary na aiza na aiza, tsy mila aterineto ny TanoNote ary ny zava-drehetra voaaro ao amin'ny findainao. Tsy misy kaonty, tsy misy fanaraha-maso.",
+    "description": "Ny aterineto dia ny teny malagasy ilazana ny hoe Internet (avy amin'ny teny frantsay na anglisy).",
+    "hasWebsiteRef": false,
+    "shouldDisplay": true
+  },
+  "onboarding_body_2": {
+    "keyword": "Kaody",
+    "expression": "Arovy amin'ny kaody na ny dian-tanana ny tano iray: tsy misokatra izy raha tsy efa voamarina ianao.",
+    "description": "Dikateny malalaka avy amin'ny teny frantsay code.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "onboarding_body_3": {
+    "keyword": "Alamino anaty fonoka ny tanonao, hita ao amin'ny fitoeram-pako izay voafafa — tsindry iray dia afaka mampody azy.",
+    "expression": "Alamino anaty fonoka ny tanonao, hita ao amin'ny fitoeram-pako izay voafafa — tsindry iray dia afaka mampody azy.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "onboarding_next": {
+    "keyword": "Manaraka",
+    "expression": "Manaraka",
+    "description": "Manjohy: Mitomany hanaraka an-dreniny Ikotokely ; Manao araka ny..,, mitandrina, manatanteraka: Manaraka ny didin' Andriamanitra ; Mandeha amin' ny lavan' ny, sisin' ny, moron' ny: Mandehana manaraka ny valamparia ; Tsy manohitra fa manao araka ny...: Manaraka ny fitongilanan-dratsy ; Momba ny..., miandany amin' ny,..: Manaraka ny fampianaran' i Bouddha ; Avy aoriana, mandimby: Manaraka ny lohataona ny fahavaratra ; Vokatry ny: Manaraka ny heloka ny sazy ; Manao tahaka, maka tahaka: Tsarovy fa hanaraka ny hataonao ny zanakao ; Miady mba hahazo, mitaky amin' ny alalan' ny fitsarana: Tsy misy mahadiso ahy raha manaraka ny anjara lovako aho.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "onboarding_replay": {
+    "keyword": "Avereno jerena ny fanolorana",
+    "expression": "Avereno jerena ny fanolorana",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "onboarding_skip": {
+    "keyword": "Dingano",
+    "expression": "Dingano",
+    "description": "dingano io tatatra io raha te ho tonga erý atsimo erý ianao",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "onboarding_start": {
+    "keyword": "Hanomboka",
+    "expression": "Hanomboka",
+    "description": "morphological form of manomboka",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "onboarding_title_1": {
+    "keyword": "Ny tanonao rehetra amin'ny toerana iray",
+    "expression": "Ny tanonao rehetra amin'ny toerana iray",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "onboarding_title_2": {
+    "keyword": "Hidio izay zava-dehibe",
+    "expression": "Hidio izay zava-dehibe",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "onboarding_title_3": {
+    "keyword": "Fandaminana sy fiverenana",
+    "expression": "Fandaminana sy fiverenana",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "option_archive": {
+    "keyword": "Tahiry",
+    "expression": "Tahiry",
+    "description": "Zavatra sarobidy na vola angonina amin' ny toerana iray hitsinjovana ny ho avy; rakitra: Nolaniny ny tahirin-dray aman-dreniny ; Fitandremana na fitanana ainin' ny toerana iray: Hataoko tsara tahiry ireo bokinao ireo fa aza matahotra ; fitsitsiana; ambim-bava",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "option_attachment": {
+    "keyword": "Anentana",
+    "expression": "Anentan-koja",
+    "description": "Fehezan-javatra antonona hoentin' ny olona iray indray mandeha: Tsy zakako io anentan-kitay io ; entana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "option_bug_report": {
+    "keyword": "Hamela ny tatitra bug",
+    "expression": "Hamela ny tatitra bug",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "option_checklist": {
+    "keyword": "Lisi-kasa",
+    "expression": "Lisi-kasa",
+    "description": "Lisitra + kasa",
+    "hasWebsiteRef": false,
+    "shouldDisplay": true
+  },
+  "option_delete_data": {
+    "keyword": "Hanary ny angona rehetra",
+    "expression": "Hanary ny angona rehetra",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "option_delete_prefs": {
+    "keyword": "Hamafa ny lamina rehetra",
+    "expression": "Hamafa ny lamina rehetra",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "option_export_before_reset": {
+    "keyword": "Tehirizo aloha ny angona",
+    "expression": "Tehirizo aloha ny angona",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "option_find": {
+    "keyword": "Zahao ao anaty tano",
+    "expression": "Zahao ao anaty tano",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "option_image": {
+    "keyword": "Hametaka sary",
+    "expression": "Hametaka sary",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "option_link": {
+    "keyword": "Mandrohy",
+    "expression": "Handrohy tano",
+    "description": "Mamatotra mafy: Mandrohy lakana.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "option_lock": {
+    "keyword": "Hanidy",
+    "expression": "Hanidy",
+    "description": "morphological form of manidy",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "option_move": {
+    "keyword": "Hafindra any amin'ny",
+    "expression": "Hafindra any amin'ny",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "option_recycle_bin": {
+    "keyword": "Fitoeram-pako",
+    "expression": "Fitoeram-pako",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "option_reset_data": {
+    "keyword": "Mampody",
+    "expression": "Hampody angona",
+    "description": "Ka tsy azo atao ny mampody fotsiny izay mila fanampiana.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "option_unlock": {
+    "keyword": "Hanala hidy",
+    "expression": "Hanala hidy",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "option_update": {
+    "keyword": "Mizaha",
+    "expression": "Hizaha vao",
+    "description": "Mitady, mikaroka zavatra: Tapak' andro maninjitra aho no nizaha ny solomasoko",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "password_too_short": {
+    "keyword": "ankaromiafina.",
+    "expression": "Tokony 8 litera farafahakeliny ny ankaromiafina.",
+    "description": "Enti-milaza zavatra tsy tiana ho fantatr' olona, afenina mafy; tsiambaratelo: Tsy tratra namosaka ny ankaromiafiny izy raha vao nahare izany teny izany",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "premium_collaboration": {
+    "keyword": "Fiaraha-miasa",
+    "expression": "Fiaraha-miasa",
+    "description": "coopération, collaboration",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "premium_intro": {
+    "keyword": "tolotra",
+    "expression": "Ao anaty tolotra Premium ny tetikasa, ny fizarana ary ny fiaraha-miasa.",
+    "description": "Fanomezana omena ny mpaka sy ny mpanatitra mpanambady ; Fanomezam-panànana (na vitsivitsy aminy fotsiny) ataon' ny ray aman-dreny aloha ben' ny hahafatesany: Nataon-drainy tolotra ho an' i Faralahy ilay tanimbary erý ambony andrefana ; Fandrosoana zavatra olona ho mari-panajana na fitiavana: Rehefa vita ny tolotra fehezam-boninkazo, dia nitsangana ny manam-pahefana hikabary",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "premium_projects": {
+    "keyword": "Tetikasa",
+    "expression": "Tetikasa",
+    "description": "projet, opération",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "premium_sharing": {
+    "keyword": "Fizarana",
+    "expression": "Fizarana",
+    "description": "Fitantanana: Fizarana lova ; Fitokotokoana: Fizaran' ny tafika ho antokony telo ; Fisampanana: Eto no fizaran' ny lalana roa: ny iray mianavaratra, ny iray mianatsimo",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "premium_unavailable": {
+    "keyword": "jifaina.",
+    "expression": "Mbola eo am-pamolavolana ny tolotra Premium. Tsy mbola afaka jifaina.",
+    "description": "qu'on consume",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "previous": {
+    "keyword": "Teo aloha",
+    "expression": "Teo aloha",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "privacy": {
+    "keyword": "Fakapike",
+    "expression": "Fakapike",
+    "description": "fakapike ty meso kapike. Le canif peut se plier",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "privacy_crash_body": {
+    "keyword": "Tsy mandeha raha tsy manaiky ianao. Raha velomina ny « {option_bug_report} », dia afaka mandefa karazana hadisoana, marika ara-teknika voasivana, dikan-tenin’ny app, modelin’ny fitaovana, dikan-tenin’ny OS ary faritra voafidy (fa tsy toerana marina) any amin’ny Sentry (Functional Software, Inc.) ny app voakirakira amin’izany. Tsy tafiditra ny votoatin’ny naoty, ny hafatra malalaka na ny famantarana maharitra ny mpampiasa. Hitan’ny tolotra tambajotra ny adiresy IP; mila ferana amin’ny fikirany ny fitahirizana azy. Mijanona ny fanangonana vaovao rehefa esorina ny fanekena, fa mety mbola hisy tatitra efa nalefa na miandry.",
+    "expression": "Tsy mandeha raha tsy manaiky ianao. Raha velomina ny « {option_bug_report} », dia afaka mandefa karazana hadisoana, marika ara-teknika voasivana, dikan-tenin’ny app, modelin’ny fitaovana, dikan-tenin’ny OS ary faritra voafidy (fa tsy toerana marina) any amin’ny Sentry (Functional Software, Inc.) ny app voakirakira amin’izany. Tsy tafiditra ny votoatin’ny naoty, ny hafatra malalaka na ny famantarana maharitra ny mpampiasa. Hitan’ny tolotra tambajotra ny adiresy IP; mila ferana amin’ny fikirany ny fitahirizana azy. Mijanona ny fanangonana vaovao rehefa esorina ny fanekena, fa mety mbola hisy tatitra efa nalefa na miandry.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "privacy_crash_title": {
+    "keyword": "Tatitra momba ny olana (tsy voatery)",
+    "expression": "Tatitra momba ny olana (tsy voatery)",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "privacy_delete_body": {
+    "keyword": "Afaka mamafa ny angona eo an-toerana ao amin’ny fikirana ianao. Tsy mamafa ny rakitra naondrana, ny kopia any amin’ny app hafa na ny tatitra efa nalefa izany. Fafana rehefa misokatra ny fitahirizana ireo tahiry fitsapana tranainy tsy voafina.",
+    "expression": "Afaka mamafa ny angona eo an-toerana ao amin’ny fikirana ianao. Tsy mamafa ny rakitra naondrana, ny kopia any amin’ny app hafa na ny tatitra efa nalefa izany. Fafana rehefa misokatra ny fitahirizana ireo tahiry fitsapana tranainy tsy voafina.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "privacy_delete_title": {
+    "keyword": "Famafana ny angonao",
+    "expression": "Famafana ny angonao",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "privacy_encryption_body": {
+    "keyword": "Ny banky angona sy ny rakitra ampiana dia afenina ao amin'ny finday. Ny fanalahidy dia tehirizina ao amin'ny fitahirizana azo antoka an'ny rafitra ary tsy mivoaka mihitsy.",
+    "expression": "Ny banky angona sy ny rakitra ampiana dia afenina ao amin'ny finday. Ny fanalahidy dia tehirizina ao amin'ny fitahirizana azo antoka an'ny rafitra ary tsy mivoaka mihitsy.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "privacy_encryption_title": {
+    "keyword": "Fanafenana ny angona",
+    "expression": "Fanafenana ny angona",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "privacy_intro": {
+    "keyword": "Tsy mitaky kaonty ny TanoNote. Ny zavatrao rehetra dia mijanona any aminao. Ny raharaha ivelany dia mahakasika ny tatitra bug fotsiny ihany izay tsy voateny hekenao anefa.",
+    "expression": "Tsy mitaky kaonty ny TanoNote. Ny zavatrao rehetra dia mijanona any aminao. Ny raharaha ivelany dia mahakasika ny tatitra bug fotsiny ihany izay tsy voateny hekenao anefa.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "privacy_local_body": {
+    "keyword": "rindrankajy.",
+    "expression": "Ny tano, ny rakitra, ny rakitra ampiana ary ny fikirana dia tehirizina eo an-toerana, ao amin'ny fitahirizana manokana an'ny rindrankajy.",
+    "description": "Ny teny hoe rindrakajy dia ny teny malagasy enti-milaza ny logiciel na programme informatique amin'ny teny frantsay (na software amin'ny teny anglisy).",
+    "hasWebsiteRef": false,
+    "shouldDisplay": true
+  },
+  "privacy_local_title": {
+    "keyword": "Tsy mivoaka ny findainao ny zavatrao",
+    "expression": "Tsy mivoaka ny findainao ny zavatrao",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "privacy_screen_locked": {
+    "keyword": "Mitady ankaromiafina ity vao misokatra. Hamarino raha manan-jo ianao.",
+    "expression": "Mitady ankaromiafina ity vao misokatra. Hamarino raha manan-jo ianao.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "privacy_tracking_body": {
+    "keyword": "Ny TanoNote dia tsy misy fandinihana fampiasana, tsy misy doka ary tsy misy mpanara-maso avy any ivelany; tsy mivarotra na mizara ny angonao izy. Tsy misy angonina raha tsy velonao ny tatitra momba ny olana.",
+    "expression": "Ny TanoNote dia tsy misy fandinihana fampiasana, tsy misy doka ary tsy misy mpanara-maso avy any ivelany; tsy mivarotra na mizara ny angonao izy. Tsy misy angonina raha tsy velonao ny tatitra momba ny olana.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "privacy_tracking_title": {
+    "keyword": "doka",
+    "expression": "Tsy misy fanarahana, tsy misy doka",
+    "description": "Dokam-barotra",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "privacy_updated": {
+    "keyword": "Farany nohavaozina: Septambra {year}",
+    "expression": "Farany nohavaozina: Septambra {year}",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "privacy_updates_body": {
+    "keyword": "Rehefa mangataka fanamarinana ao amin’ny Momba ny ianao dia mifandray amin’ny App Store na Google Play ny app. Tsy alefa ny votoatin’ny naoty. Ny store no mikarakara ny metadata momba ilay fifandraisana.",
+    "expression": "Rehefa mangataka fanamarinana ao amin’ny Momba ny ianao dia mifandray amin’ny App Store na Google Play ny app. Tsy alefa ny votoatin’ny naoty. Ny store no mikarakara ny metadata momba ilay fifandraisana.",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "privacy_updates_title": {
+    "keyword": "Fanamarinana ny fanavaozana",
+    "expression": "Fanamarinana ny fanavaozana",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "quit": {
+    "keyword": "Hiala",
+    "expression": "Hiala",
+    "description": "morphological form of ialana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "quit_app": {
+    "keyword": "Hiala",
+    "expression": "Hiala",
+    "description": "morphological form of ialana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "redo": {
+    "keyword": "Averina",
+    "expression": "Averina",
+    "description": "Ampanaovina dia mianotra: Avereno ny fiarakodia ; Lazaina indray: Avareno izay lazaiko ; Atao fanindroany: Naverina indray ny fanadinana fa nisy nahita mialoha ny zavatra hanadinana ; Asaina miverina: Naverina ilay iraka ; Aterina: Tsy mbola naverin' ilay karilahy iny ihany ny bokiko nindraminy ; Ampodìna: Naveriny ho amin' ny ialan' ny fahamarinana ilay zanany nania",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "reduce": {
+    "keyword": "Ahena",
+    "expression": "Ahena",
+    "description": "Hakelezina: Ahenao itỳ variko itỳ fa be loatra ~ Nahenany ny karamako ka tsy faly aho ; Atao vitsivitsy kokoa: Ahenao ny isan' ny sigara laninao amin' ny indray andro",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "reset": {
+    "keyword": "Afongana",
+    "expression": "Afongano",
+    "description": "Atao rava tanteraka",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "results": {
+    "keyword": "Raha {count} no hita",
+    "expression": "Raha {count} no hita",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "retry": {
+    "keyword": "Andramo indray",
+    "expression": "Andramo indray",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "save": {
+    "keyword": "Raiketo",
+    "expression": "Raiketo",
+    "description": "imperative of passive verb raiketana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "save_before_leave": {
+    "keyword": "Raiketo alohan'ny hiala",
+    "expression": "Raiketo alohan'ny hiala",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "search": {
+    "keyword": "Karohy",
+    "expression": "Karohy",
+    "description": "imperative of passive verb karofana, karohina",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "search_history": {
+    "keyword": "Teo aloha",
+    "expression": "Teo aloha",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "search_results": {
+    "keyword": "Voka-pikarohana",
+    "expression": "Voka-pikarohana",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "select": {
+    "keyword": "Hifantina",
+    "expression": "Hifantina",
+    "description": "morphological form of mifantina",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "select_all": {
+    "keyword": "Izy rehetra",
+    "expression": "Izy rehetra",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "select_none": {
+    "keyword": "Tsisy",
+    "expression": "Tsisy",
+    "description": "Fifintinan' ny teny roa hoe \"tsy misy\"",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "settings": {
+    "keyword": "Fanamory",
+    "expression": "Fanamory",
+    "description": "Fomba entina manamory, mamily ; Ny fivoy mamily ny lakana ; Familian-tsambo",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "single_doc_selected": {
+    "keyword": "Rakitra {count} voafantina",
+    "expression": "Rakitra {count} voafantina",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "single_folder_selected": {
+    "keyword": "Fonoka {count} voafantina",
+    "expression": "Fonoka {count} voafantina",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "single_note_selected": {
+    "keyword": "Tano {count} voafantina",
+    "expression": "Tano {count} voafantina",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "single_task_selected": {
+    "keyword": "Kasa {count} voafantina",
+    "expression": "Kasa {count} voafantina",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "sort_by": {
+    "keyword": "Alaharo araka",
+    "expression": "Alaharo araka",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "sort_direction": {
+    "keyword": "Tondron-dahatra",
+    "expression": "Tondron-dahatra",
+    "description": "Tondro + lahatra (sens du tri, croissant ou décroissant).",
+    "hasWebsiteRef": false,
+    "shouldDisplay": true
+  },
+  "storage_recovery_message": {
+    "keyword": "Diby",
+    "expression": "Diby ny fitahirizana. Jereo aloha raha mbola malalaka dia andramo indray avy eo. Tsy hofafana ny angonao.",
+    "description": "Feno rano izay mameno ny morona: Diby rano ny taninketsa",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "task": {
+    "keyword": "kasa",
+    "expression": "kasa",
+    "description": "Mitovy hevitra amin' ny saika: kely foana sisa tsy...: Kasa nianjera tao anaty hady aho raha tsy nahatana ilay vatan-kazo maniry eo ambony andrefana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "tasks": {
+    "keyword": "kasa",
+    "expression": "kasa",
+    "description": "Mitovy hevitra amin' ny saika: kely foana sisa tsy...: Kasa nianjera tao anaty hady aho raha tsy nahatana ilay vatan-kazo maniry eo ambony andrefana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "tasks_selected": {
+    "keyword": "Kasa {count}/{total} voafantina",
+    "expression": "Kasa {count}/{total} voafantina",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "text_size_extra_large": {
+    "keyword": "Lehibe kokoa",
+    "expression": "Lehibe kokoa",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "text_size_large": {
+    "keyword": "Lehibe",
+    "expression": "Lehibe",
+    "description": "Enti-milaza olona na biby sady avo ranjanana no be vatana, na zavatra makadiry, ngeza: Trondro lehibe, trano lehibe",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "text_size_normal": {
+    "keyword": "Antonony",
+    "expression": "Antonony",
+    "description": "izay heverina fa sahaza",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "text_size_small": {
+    "keyword": "Kely",
+    "expression": "Kely",
+    "description": "Tsy lehibe, madinika: Trano kely no ipetrahanay ; Tsy be, vitsy, tsy firy: Kely ny isan' ny mpianatra tonga ; Manify, mezaka: Kely ny vahan' io olona io ; Fohy zeny: Lazain' ny mpitantara fa olona kely, hono izany vazimba izany.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "theme_automatic": {
+    "keyword": "Mandeha ho azy",
+    "expression": "Mandeha ho azy",
+    "description": "mandeha irery amin'izao, tsy taritina na atosika",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "theme_dark": {
+    "keyword": "Matroka",
+    "expression": "Matroka",
+    "description": "Tsy mazava, tsy manganohano intsony, tsy manana hamiratana, vasoka: Efa matroka lahy ny volafotsy amin' itý firavaka itý",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "theme_light": {
+    "keyword": "Mazava",
+    "expression": "Mazava",
+    "description": "Mitera-kazavana: Mazava ny afo ; Voazava, tsy maizimaizina, hita tsara daholo ny ao anatiny: Tiako ity efitrano ity fa mazava tsara ; Mahitsy, tsy farimparina: Feo mazava no avoakan' io sodina io ; Tsy miolikolika, tsy misy an-kifonofono: Hevitra mazava; teny mazava ; Tanoranora (loko): Itsy mazavazava itsy no endrehina anao",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "title": {
+    "keyword": "Lohateny",
+    "expression": "Lohateny",
+    "description": "Anarana -- izay matetika teny fohifohy -- entina hilazana boky na toko iray amin' ny boky na koa lahateny famelabelaran-kevitra: \"Mba olom-banona\" no lohateny nalain' ny mpampianatra anay ho voaboasana ; Fifanarahana fa hifamela heloka na hifandefitra na hifanampy.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "title_here": {
+    "keyword": "Lohateny eto",
+    "expression": "Lohateny eto",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "toggle_theme": {
+    "keyword": "Hivadi-dafy",
+    "expression": "Hivadi-dafy",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "trash_empty": {
+    "keyword": "Fongana",
+    "expression": "Fongana ny fako",
+    "description": "Tsy misy tavela, rava, levona: Fongana tamin' ny rivo-doza ny varinay ; Lany nolanina, lasa daholo.",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "unarchive": {
+    "keyword": "Fongarina",
+    "expression": "Fongarina",
+    "description": "Hadina avy ao anaty tany: Misy faty tadiavin' ny olona fongarina etoamin' ity toerona ity ; Velomina indray: Misy tsy tsara hofongarina ny fomba fahiny sasany ; Tsahivina indray, nefa efa navalon' ny fanadinoana: Aza fongarina ny hadisoana taloha",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  },
+  "undo": {
+    "keyword": "Ampodio",
+    "expression": "Ampodio",
+    "description": "imperative of relative verb ampodiana",
+    "hasWebsiteRef": true,
+    "shouldDisplay": false
+  },
+  "update_unavailable": {
+    "keyword": "Tsy afaka mizaha vao",
+    "expression": "Tsy afaka mizaha vao",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "update_up_to_date": {
+    "keyword": "Efa vao ity",
+    "expression": "Efa vao ity",
+    "description": "",
+    "hasWebsiteRef": false,
+    "shouldDisplay": false
+  },
+  "voambolana": {
+    "keyword": "Voambolana",
+    "expression": "Voambolana",
+    "description": "Fitambaran' ny teny rehetra fampiasa amin' ny sampam-pahaizana iray ; Rakibolana nofintinina ; voanteny fampiasa manokana amina seha-pahalalana na sehatrasa ; boky mirakitra ny tanisateny fampiasa manokana eo amin' ny sehatra iray ka amin' izany ny teny iditra tsy voatery anolorana ny fahalalana rehetra mety ilain' ny mpampiasa ; lisitra araka ny abidia sy fanazavana ny voambolan-tsehatra manokana, ohatra momba ny tranomboky, nampiasana teo anatin' ny boky",
+    "hasWebsiteRef": true,
+    "shouldDisplay": true
+  }
+}

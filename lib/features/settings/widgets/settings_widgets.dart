@@ -1,0 +1,239 @@
+import 'package:flutter/material.dart';
+import 'package:tano/shared/widgets/check_disc.dart';
+import 'package:tano/shared/widgets/theme.dart';
+
+/// One settings section: an optional title, a card of tiles and an optional
+/// footer. Every section of the settings tree is built from this.
+class SettingsGroup extends StatelessWidget {
+  const SettingsGroup({
+    super.key,
+    this.title,
+    required this.tiles,
+    this.footer = const <Widget>[],
+    this.color,
+    this.topSpacing = defaultTopSpacing,
+  });
+
+  /// Section title; when null the group starts directly with its card.
+  final String? title;
+
+  /// Card content, wrapped in a [SettingsCard].
+  final List<Widget> tiles;
+
+  final List<Widget> footer;
+  final Color? color;
+
+  /// Vertical space above this group; defaults to [defaultTopSpacing].
+  final double topSpacing;
+
+  /// Vertical space above a group, so consecutive sections never touch.
+  static const double defaultTopSpacing = 24.0;
+
+  /// Space between the title, the card and the footer of one group.
+  static const double contentSpacing = 4.0;
+
+  /// Space between the lines of one footer.
+  static const double footerLineSpacing = 6.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: topSpacing),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          if (title != null) SettingsSection(title: title!),
+          SettingsCard(color: color, children: tiles),
+          if (footer.isNotEmpty) SettingsFooter(children: footer),
+        ],
+      ),
+    );
+  }
+}
+
+class SettingsSection extends StatelessWidget {
+  const SettingsSection({super.key, required this.title});
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        20.0,
+        0.0,
+        20.0,
+        SettingsGroup.contentSpacing,
+      ),
+      child: Text(
+        title,
+        style: TextStyle(
+          color: mutedTextColor(context),
+          fontWeight: FontWeight.bold,
+          fontSize: TanoText.listTitle,
+          fontFamily: 'TanoSerif',
+          letterSpacing: -0.08,
+        ),
+      ),
+    );
+  }
+}
+
+class SettingsFooter extends StatelessWidget {
+  const SettingsFooter({super.key, required this.children});
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        20.0,
+        SettingsGroup.contentSpacing,
+        20.0,
+        0.0,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: children,
+      ),
+    );
+  }
+}
+
+class SettingsFooterText extends StatelessWidget {
+  const SettingsFooterText({super.key, required this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: SettingsGroup.footerLineSpacing),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: TanoText.label,
+          color: mutedTextColor(context),
+          height: 1.4,
+        ),
+      ),
+    );
+  }
+}
+
+class SettingsCard extends StatelessWidget {
+  const SettingsCard({super.key, required this.children, this.color});
+  final List<Widget> children;
+
+  /// Optional card background, for emphasised sections.
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> dividedChildren = [];
+    for (int i = 0; i < children.length; i++) {
+      dividedChildren.add(children[i]);
+      if (i < children.length - 1) {
+        dividedChildren.add(
+          Divider(
+            height: 1.0,
+            thickness: 0.5,
+            indent: 16.0,
+            endIndent: 0.0,
+            color: primaryTextColor(context).withValues(alpha: 0.08),
+          ),
+        );
+      }
+    }
+
+    return Card(
+      elevation: 0.0,
+      color: color ?? editorBackground(context),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(settingsCardRadius),
+        side: BorderSide(
+          color: cardBorderColor(
+            Theme.of(context).brightness == Brightness.dark,
+          ),
+        ),
+      ),
+      child: Column(children: dividedChildren),
+    );
+  }
+}
+
+class SettingsTile extends StatelessWidget {
+  const SettingsTile({
+    super.key,
+    required this.title,
+    required this.selected,
+    required this.onTap,
+    this.trailing,
+    this.textColor,
+    this.fontWeight,
+  });
+
+  final String title;
+  final bool selected;
+  final VoidCallback onTap;
+  final Widget? trailing;
+  final Color? textColor;
+  final FontWeight? fontWeight;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      visualDensity: const VisualDensity(vertical: -2.0),
+      contentPadding: const EdgeInsets.symmetric(horizontal: appPaddingWide),
+      dense: false,
+      title: Text(
+        title,
+        style: TextStyle(
+          color:
+              textColor ??
+              (selected ? accentColor(context) : primaryTextColor(context)),
+          fontWeight:
+              fontWeight ?? (selected ? FontWeight.bold : FontWeight.normal),
+          fontSize: TanoText.listTitle,
+        ),
+      ),
+      trailing: trailing ?? (selected ? const CheckDisc() : null),
+      onTap: onTap,
+    );
+  }
+}
+
+class SettingsSwitchTile extends StatelessWidget {
+  const SettingsSwitchTile({
+    super.key,
+    required this.title,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final String title;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      visualDensity: const VisualDensity(vertical: -2.0),
+      contentPadding: const EdgeInsets.only(left: appPaddingWide, right: 10.0),
+      dense: false,
+      title: Text(
+        title,
+        style: TextStyle(
+          color: primaryTextColor(context),
+          fontSize: TanoText.listTitle,
+        ),
+      ),
+      trailing: Transform.scale(
+        scale: 0.8,
+        child: Switch.adaptive(
+          value: value,
+          onChanged: onChanged,
+          activeThumbColor: accentColor(context),
+        ),
+      ),
+    );
+  }
+}

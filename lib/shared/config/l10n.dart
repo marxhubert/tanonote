@@ -1,0 +1,963 @@
+import 'dart:ui';
+import 'package:flutter/foundation.dart';
+import 'package:tano/shared/config/secure_preferences.dart';
+
+/// Application language manager.
+///
+/// The chosen language is stored in the shared preferences and is used
+/// to resolve interface strings through [AppText]. The default language
+/// is English.
+class LocaleController extends ChangeNotifier {
+  LocaleController._();
+
+  static final LocaleController instance = LocaleController._();
+
+  static const String _prefKey = 'language';
+  static const String defaultLanguage = 'en';
+  static const List<String> supportedLanguages = <String>['en', 'fr', 'mg'];
+
+  String _language = defaultLanguage;
+
+  String get language => _language;
+
+  /// Loads the saved language, or detects it automatically on first launch
+  /// based on the user's country and system language.
+  Future<void> init() async {
+    final SecurePreferences prefs = await SecurePreferences.getInstance();
+    final String? saved = prefs.getString(_prefKey);
+
+    if (saved != null && supportedLanguages.contains(saved)) {
+      _language = saved;
+    } else {
+      // Automatic detection for first launch
+      final Locale systemLocale = PlatformDispatcher.instance.locale;
+      final String? countryCode = systemLocale.countryCode?.toUpperCase();
+      final String languageCode = systemLocale.languageCode.toLowerCase();
+
+      if (countryCode == 'MG') {
+        _language = 'mg';
+      } else if (_isFrancophone(countryCode, languageCode)) {
+        _language = 'fr';
+      } else {
+        _language = 'en';
+      }
+    }
+  }
+
+  bool _isFrancophone(String? countryCode, String languageCode) {
+    // If the phone is already in French, it's a safe bet.
+    if (languageCode == 'fr') return true;
+
+    // List of major francophone countries (ISO codes)
+    const Set<String> francophoneCountries = {
+      'FR',
+      'BE',
+      'CH',
+      'CA',
+      'LU',
+      'MC',
+      'SN',
+      'CI',
+      'CM',
+      'CD',
+      'CG',
+      'GA',
+      'GN',
+      'NE',
+      'TG',
+      'BJ',
+      'BF',
+      'BI',
+      'RW',
+      'KM',
+      'DJ',
+      'HT',
+      'VU',
+      'SC',
+      'TD',
+      'ML',
+      'MA',
+      'DZ',
+      'TN',
+    };
+
+    return countryCode != null && francophoneCountries.contains(countryCode);
+  }
+
+  /// Saves and applies the new language, then notifies listeners so the
+  /// whole interface re-renders with the new strings.
+  Future<void> setLanguage(String language) async {
+    _language = language;
+    notifyListeners();
+    final SecurePreferences prefs = await SecurePreferences.getInstance();
+    await prefs.setString(_prefKey, language);
+  }
+}
+
+/// Interface strings, resolved according to the current language.
+///
+/// [AppText.count] builds the "N thing(s)" labels used by metadata lines and
+/// the undo message.
+///
+/// Values may contain named parameters `{name}`, replaced when [tr]
+/// is called.
+class AppText {
+  AppText._();
+
+  /// "1 note", "3 notes", "1 folder"… The plural key is used above one.
+  static String count(int value, String singular, String plural) =>
+      '$value ${tr(value > 1 ? plural : singular)}';
+
+  /// Every translatable string, by key.
+  static const Map<String, String> _en = <String, String>{
+    // Home
+    'all_docs': 'All docs',
+    'filter_all': 'All',
+    'filter_notes': 'Notes',
+    'filter_tasks': 'Tasks',
+    'docs': 'docs',
+    'doc': 'doc',
+    'my_folders': 'My folders',
+    'folder': 'folder',
+    'folders': 'folders',
+    'no_folder': 'Home',
+    'delete_folder': 'Delete folder',
+    'delete_folder_question':
+        'This folder contains {count} notes. Delete them with the folder?',
+    'search_results': 'Results',
+    'add_folder': 'Add folder',
+    'folder_name': 'Folder name',
+    'folder_empty': 'This folder is empty',
+    'trash_empty': 'Empty trash',
+    'archive_empty': 'Nothing archived',
+    'unarchive': 'Unarchive',
+    'archive_done': 'Archived',
+    'note': 'note',
+    'notes': 'notes',
+    'search': 'Search',
+    'all_notes_selected': 'All {count} notes are selected',
+    'notes_selected': '{count}/{total} notes selected',
+    'single_note_selected': '{count} single note selected',
+    'single_task_selected': '{count} single task selected',
+    'single_doc_selected': '{count} single doc selected',
+    'tasks_selected': '{count}/{total} tasks selected',
+    'all_tasks_selected': 'All {count} tasks are selected',
+    'docs_selected': '{count}/{total} docs selected',
+    'all_docs_selected': 'All {count} docs are selected',
+    'single_folder_selected': '{count} single folder selected',
+    'folders_selected': '{count}/{total} folders selected',
+    'all_folders_selected': 'All {count} folders are selected',
+    'delete_note': 'Delete note',
+    'delete_notes': 'Delete {count} notes',
+    'delete_all_notes': 'Delete all notes',
+    'delete': 'Delete',
+    'reset': 'Reset',
+    'select': 'Select',
+    'select_all': 'All',
+    'select_none': 'None',
+    'note_deleted': 'Note deleted',
+    'deleted': 'deleted',
+    'undo': 'Undo',
+    'save_before_leave': 'Save before leaving',
+    'save': 'Save',
+    'title_here': 'Title here',
+    'content_empty': 'Content cannot be empty',
+    'no_note_found': 'No item found',
+    'results': '{count} matching results',
+    'confirm_question': 'Are you sure you want to continue?',
+    'quit': 'Leave',
+    'retry': 'Retry',
+    'data_transfer_title': 'Import & export',
+    'desc_export_data':
+        'Save your notes and attachments to a .tano file, encrypted or not.',
+    'desc_import_data':
+        'Add notes and attachments from a .tano file. Existing notes are kept.',
+    'option_export_before_reset': 'Export my data first',
+    'desc_export_before_reset':
+        'Strongly recommended: deleted notes cannot be recovered. Export a copy first.',
+    'export_data': 'Export data',
+    'import_data': 'Import data',
+    'export_action': 'Export',
+    'export_encrypt': 'Encrypt the export',
+    'export_password': 'Password',
+    'export_password_hint': '8 characters minimum',
+    'password_too_short': 'The password must be at least 8 characters.',
+    'export_locked_required': 'Locked notes require an encrypted export.',
+    'export_failed': 'Export failed',
+    'export_done': 'Export saved.',
+    'import_password_title': 'Encrypted export',
+    'import_password_message': 'Enter the password of this export.',
+    'import_failed': 'Import failed',
+    'import_too_large': 'This export exceeds the 64 MiB limit.',
+    'import_done':
+        '{added} notes added, {folders} folders, {skipped} skipped, {unlocked} unlocked.',
+    'import_clear_warning':
+        'Cleartext exports are not protected. Keep them safe.',
+    'quit_app': 'Quit',
+    'privacy_screen_locked':
+        "This content is locked. Authenticate to continue.",
+    'storage_recovery_message':
+        "Storage is temporarily unavailable. Unlock your device, check its free space, then retry. Your existing data will not be reset.",
+    'load_error_title': 'Unable to load your notes',
+    'load_error_message':
+        'Something went wrong while opening the app. You can try again.',
+    'cancel': 'Cancel',
+    'ok': 'OK',
+    'back': 'Back',
+    'no_title': 'No title',
+    'no_data': 'Nothing yet',
+    'empty': 'Empty',
+    'edit_note': 'Edit note',
+    'completed_tasks': 'Completed tasks',
+    'description_limit': 'The description is limited to 500 characters.',
+    'add_description': 'Add description',
+    'description': 'Description',
+    'find_in_tasks': 'Find in tasks',
+    'add_task': 'Add task list',
+    'edit_task': 'Edit task list',
+    'tasks': 'tasks',
+    'task': 'task',
+    'add_task_item': 'Add a task',
+    'add_note': 'Add note',
+    'find_in_note': 'Find in note',
+    'chars': 'chars',
+    'folders_group': 'Folders',
+    'notes_group': 'Docs',
+    'title': 'Title',
+    'content': 'Content',
+    'important': 'Important',
+    'about_description':
+        'TanoNote is a minimal, secure, and fast note-taking app designed to keep your ideas organized and your mind focused. It prioritizes privacy by keeping all your data exclusively on your device.',
+    'about_cta':
+        'Help us grow and improve TanoNote! Your support allows us to keep the app free and private for everyone. Consider taking action below:',
+    'about_premium': 'Get Premium version',
+    'premium_projects': "Projects",
+    'premium_sharing': "Sharing",
+    'premium_collaboration': "Collaboration",
+    'premium_intro':
+        "Premium will include projects, sharing and collaboration.",
+    'premium_unavailable':
+        "These features are in development. Purchases are not available yet.",
+    'about_more': 'You may also want (anonymously):',
+    'close_button': 'Close',
+    // Accessibility labels for icon-only actions.
+    'more': 'More',
+    'redo': 'Redo',
+    'add': 'Add',
+    'clear': 'Clear',
+    'sort_by': 'Sort by',
+    'sort_direction': 'Sort direction',
+    'toggle_theme': 'Switch theme',
+    'empty_trash': 'Empty the bin',
+    'reduce': 'Reduce',
+    'previous': 'Previous',
+    'next': 'Next',
+    'home': 'Home',
+    'about': 'About',
+    'settings': 'Settings',
+    'option_image': 'Choose image',
+    'corrupted_image': 'Corrupted image',
+    'option_checklist': 'Checklist',
+    'option_link': 'Link a note',
+    'option_attachment': 'Attachment',
+    'edit': 'Edit',
+    'option_find': 'Find in note',
+    'option_move': 'Move to',
+    'option_lock': 'Lock',
+    'option_unlock': 'Unlock',
+    'auth_reason': 'Authenticate to access the note',
+    'delete_locked_error': 'Locked notes cannot be deleted',
+    'lock_unavailable_title': 'Cannot lock this note',
+    'lock_requires_device_lock':
+        'Set up a screen lock (passcode or biometrics) to lock notes',
+    'option_bug_report': 'Allow bug report',
+    'option_update': 'Check for update',
+    'update_up_to_date': 'You are up to date',
+    'update_unavailable': 'Update check unavailable',
+    'option_archive': 'Archive',
+    'option_recycle_bin': 'Recycle bin',
+    'option_reset_data': 'Reset data',
+    'desc_bug_report':
+        "Send optional crash diagnostics without note content or a persistent user identifier. You can withdraw consent at any time.",
+    'desc_archive':
+        'Archived notes and tasks leave Home and their folders until you unarchive them.',
+    'desc_recycle_bin':
+        'Deleted notes are kept in the recycle bin for 30 days before being permanently removed.',
+    'desc_reset_data':
+        'Resetting data will permanently delete all your notes and preferences. This action cannot be undone.',
+    'option_delete_data': 'Delete all data',
+    'option_delete_prefs': 'Delete all preferences',
+    'desc_delete_data':
+        'This will permanently remove all your notes and attachments.',
+    'desc_delete_prefs':
+        'This will reset all your settings (theme, language, sorting) to their default values.',
+    // Menu
+    'menu_list': 'List',
+    'menu_left_side': 'Left side',
+    'menu_grid': 'Grid',
+    'menu_sorting': 'Sorting',
+    'menu_theme': 'Appearance',
+    'theme_automatic': 'Automatic',
+    'menu_date': 'Date',
+    'menu_modified': 'Recently modified',
+    'menu_title': 'Title',
+    'menu_favorites': 'Important',
+    'menu_theme_sort': 'Theme',
+    'menu_descending': 'Descending',
+    'menu_language': 'Language',
+    'menu_english': 'English',
+    'menu_french': 'French',
+    'menu_malagasy': 'Malagasy',
+    'theme_light': 'Light',
+    'theme_dark': 'Dark',
+    'language_references': 'Language References',
+    'attachment': 'Attachment',
+    'attachments': 'Attachments',
+    // Privacy policy. The canonical text lives in docs/privacy.md.
+    'privacy': 'Privacy policy',
+    'privacy_intro':
+        "TanoNote requires no account. Your notes and folders are stored locally. Optional diagnostics and update checks use external services.",
+    'privacy_local_title': 'Data stored on your device',
+    'privacy_local_body':
+        'Your notes, folders, attachments and preferences are saved locally, in the private storage of the app.',
+    'privacy_encryption_title': 'Encryption at rest',
+    'privacy_encryption_body':
+        'The database and the attachments are encrypted on the device. The key is kept in the secure storage of the system and never leaves it.',
+    'privacy_crash_title': 'Crash reports (optional)',
+    'privacy_crash_body':
+        "Off by default. With “{option_bug_report}” enabled, configured builds send filtered exception types, stack symbols, app version, device model, OS version and configured device region (not precise location) to Sentry (Functional Software, Inc.). Note content, free-form error messages and persistent user identifiers are excluded. Network services necessarily receive your IP address; its retention must be restricted by the service configuration. Withdrawing consent stops new captures; already queued or transmitted reports may remain.",
+    'privacy_updates_title': 'Update check',
+    'privacy_updates_body':
+        "When you request an update check from About, the app contacts the App Store or Google Play. No note content is sent. The store processes the network metadata of this request.",
+    'privacy_tracking_title': 'No tracking, no ads',
+    'privacy_tracking_body':
+        'TanoNote contains no usage analytics, no advertising and no third-party tracker, and never sells or shares your data. Nothing is collected until you turn the crash reports on.',
+    'privacy_delete_title': 'Deleting your data',
+    'privacy_delete_body':
+        "Settings can delete local app data. This does not erase exported files, copies held by other applications or diagnostics already sent. Known pre-release plaintext backups are discarded when local storage opens.",
+    'privacy_updated': 'Last updated: September {year}',
+    'licenses': 'Licenses',
+    'delete_photo': 'Delete photo',
+    if (kDebugMode) 'developer_reset': 'Developer reset',
+    if (kDebugMode)
+      'developer_reset_failed':
+          'Reset could not finish. Some data may already have been replaced. Retry to reload all demo data.',
+    // Labs: the developer surface, debug builds only.
+    if (kDebugMode) 'labs': 'Labs',
+    if (kDebugMode)
+      'labs_hint': 'Developer tools. Debug builds only, never in a release.',
+    if (kDebugMode) 'labs_sentry_test': 'Send a test error',
+    if (kDebugMode) 'labs_sentry_sent': 'Test error sent to Sentry.',
+    if (kDebugMode)
+      'labs_sentry_unavailable':
+          'Crash reports are off. Turn them on before sending a test.',
+    // Introduction
+    'onboarding_skip': 'Skip',
+    'onboarding_next': 'Next',
+    'onboarding_start': 'Get started',
+    'onboarding_title_1': 'Every note in one place',
+    'onboarding_body_1':
+        'Write on the go. TanoNote works with no connection and keeps everything encrypted on your phone. No account, no tracking.',
+    'onboarding_title_2': 'Lock what matters',
+    'onboarding_body_2':
+        'Secure a note with your code or your fingerprint: it opens only once you are recognised.',
+    'onboarding_title_3': 'In order, with a way back',
+    'onboarding_body_3':
+        'Sort your notes into folders, and find everything you deleted in the trash — with one tap to undo.',
+    'onboarding_replay': 'Replay the introduction',
+    // Feedback and text
+    'menu_feedback': 'Feedback and text',
+    'text_size_small': 'Small',
+    'text_size_normal': 'Normal',
+    'text_size_large': 'Large',
+    'text_size_extra_large': 'Larger',
+    'feedback_haptics': 'Haptic feedback',
+    'feedback_sound': 'Sound',
+    'moved_to': 'moved to {folder}',
+    'moved_home': 'moved back to Home',
+    'moved': 'moved',
+    'note_locked': 'Note locked',
+    'note_unlocked': 'Note unlocked',
+    'folder_locked': 'Folder locked',
+    'folder_unlocked': 'Folder unlocked',
+    // Search
+    'search_history': 'Recent',
+  };
+
+  static const Map<String, String> _fr = <String, String>{
+    // Home
+    'all_docs': 'Tous les docs',
+    'filter_all': 'Tous',
+    'filter_notes': 'Notes',
+    'filter_tasks': 'Tâches',
+    'docs': 'docs',
+    'doc': 'doc',
+    'my_folders': 'Mes dossiers',
+    'folder': 'dossier',
+    'folders': 'dossiers',
+    'no_folder': 'Accueil',
+    'delete_folder': 'Supprimer le dossier',
+    'delete_folder_question':
+        'Ce dossier contient {count} notes. Les supprimer avec le dossier ?',
+    'search_results': 'Résultats',
+    'add_folder': 'Ajouter un dossier',
+    'folder_name': 'Nom du dossier',
+    'folder_empty': 'Ce dossier est vide',
+    'trash_empty': 'Corbeille vide',
+    'archive_empty': 'Aucune archive',
+    'unarchive': 'Désarchiver',
+    'archive_done': 'Archivé',
+    'note': 'note',
+    'notes': 'notes',
+    'search': 'Rechercher',
+    'all_notes_selected': 'Toutes les {count} notes sont sélectionnées',
+    'notes_selected': '{count}/{total} notes sélectionnées',
+    'single_note_selected': '{count} seule note sélectionnée',
+    'single_task_selected': '{count} seule tâche sélectionnée',
+    'single_doc_selected': '{count} seul doc sélectionné',
+    'tasks_selected': '{count}/{total} tâches sélectionnées',
+    'all_tasks_selected': 'Toutes les {count} tâches sont sélectionnées',
+    'docs_selected': '{count}/{total} docs sélectionnés',
+    'all_docs_selected': 'Tous les {count} docs sont sélectionnés',
+    'single_folder_selected': '{count} seul dossier sélectionné',
+    'folders_selected': '{count}/{total} dossiers sélectionnés',
+    'all_folders_selected': 'Tous les {count} dossiers sont sélectionnés',
+    'delete_note': 'Supprimer la note',
+    'delete_notes': 'Supprimer les {count} notes',
+    'delete_all_notes': 'Supprimer toutes les notes',
+    'delete': 'Supprimer',
+    'reset': 'Réinitialiser',
+    'select': 'Sélectionner',
+    'select_all': 'Tout',
+    'select_none': 'Rien',
+    'note_deleted': 'Note supprimée',
+    'deleted': 'supprimé(s)',
+    'undo': 'Annuler',
+    'save_before_leave': 'Enregistrer avant de quitter',
+    'save': 'Enregistrer',
+    'title_here': 'Le titre ici',
+    'content_empty': 'Le contenu ne peut pas être vide',
+    'no_note_found': 'Aucun élément trouvé',
+    'results': '{count} résultats correspondants',
+    'confirm_question': 'Voulez-vous vraiment continuer ?',
+    'quit': 'Quitter',
+    'retry': 'Réessayer',
+    'data_transfer_title': 'Import & export',
+    'desc_export_data':
+        'Enregistrez vos notes et pièces jointes dans un fichier .tano, chiffré ou non.',
+    'desc_import_data':
+        "Ajoutez les notes et pièces jointes d'un fichier .tano. Les notes existantes sont conservées.",
+    'option_export_before_reset': 'Exporter mes données avant',
+    'desc_export_before_reset':
+        'Fortement recommandé : une fois supprimées, vos notes ne peuvent pas être récupérées. Exportez-en une copie avant.',
+    'export_data': 'Exporter les données',
+    'import_data': 'Importer des données',
+    'export_action': 'Exporter',
+    'export_encrypt': "Chiffrer l'export",
+    'export_password': 'Mot de passe',
+    'export_password_hint': '8 caractères minimum',
+    'password_too_short': 'Le mot de passe doit faire au moins 8 caractères.',
+    'export_locked_required':
+        'Les notes verrouillées exigent un export chiffré.',
+    'export_failed': "Échec de l'export",
+    'export_done': 'Export enregistré.',
+    'import_password_title': 'Export chiffré',
+    'import_password_message': "Saisissez le mot de passe de cet export.",
+    'import_failed': "Échec de l'import",
+    'import_too_large': "Cet export dépasse la limite de 64 Mio.",
+    'import_done':
+        '{added} notes ajoutées, {folders} dossiers, {skipped} ignorées, {unlocked} déverrouillées.',
+    'import_clear_warning':
+        "Les exports en clair ne sont pas protégés. Gardez-les en sécurité.",
+    'quit_app': 'Quitter',
+    'privacy_screen_locked':
+        "Ce contenu est verrouillé. Authentifiez-vous pour continuer.",
+    'storage_recovery_message':
+        "Le stockage est indisponible. Déverrouillez l’appareil, vérifiez l’espace libre, puis réessayez. Vos données existantes ne seront pas réinitialisées.",
+    'load_error_title': 'Impossible de charger vos notes',
+    'load_error_message':
+        "Une erreur est survenue à l'ouverture de l'application. Vous pouvez réessayer.",
+    'cancel': 'Annuler',
+    'ok': 'OK',
+    'back': 'Retour',
+    'no_title': 'Sans titre',
+    'no_data': "Rien pour l'instant",
+    'empty': 'Vide',
+    'edit_note': 'Modifier la note',
+    'completed_tasks': 'Tâches achevées',
+    'description_limit': 'La description est limitée à 500 caractères.',
+    'add_description': 'Ajouter une description',
+    'description': 'Description',
+    'find_in_tasks': 'Rechercher dans les tâches',
+    'add_task': 'Ajouter une liste de tâches',
+    'edit_task': 'Modifier la liste de tâches',
+    'tasks': 'tâches',
+    'task': 'tâche',
+    'add_task_item': 'Ajouter une tâche',
+    'add_note': 'Ajouter une note',
+    'find_in_note': 'Rechercher dans la note',
+    'chars': 'caractères',
+    'folders_group': 'Dossiers',
+    'notes_group': 'Docs',
+    'title': 'Titre',
+    'content': 'Contenu',
+    'important': "Important",
+    'about_description':
+        "TanoNote est une application de prise de notes minimaliste, sécurisée et rapide, conçue pour organiser vos idées tout en restant concentré. Elle privilégie votre vie privée en conservant toutes vos données exclusivement sur votre appareil.",
+    'about_cta':
+        "Aidez-nous à faire grandir et améliorer TanoNote ! Votre soutien nous permet de garder l'application gratuite et privée pour tous. Voici comment vous pouvez nous aider :",
+    'about_premium': "Passer à la version Premium",
+    'premium_projects': "Projets",
+    'premium_sharing': "Partage",
+    'premium_collaboration': "Collaboration",
+    'premium_intro':
+        "Premium comprendra les projets, le partage et la collaboration.",
+    'premium_unavailable':
+        "Ces fonctionnalités sont en développement. Les achats ne sont pas encore disponibles.",
+    'about_more': "Vous pouvez également (et de façon anonyme) :",
+    'close_button': 'Fermer',
+    // Accessibility labels for icon-only actions.
+    'more': 'Plus',
+    'redo': 'Rétablir',
+    'add': 'Ajouter',
+    'clear': 'Effacer',
+    'sort_by': 'Trier par',
+    'sort_direction': 'Sens du tri',
+    'toggle_theme': 'Changer de thème',
+    'empty_trash': 'Vider la corbeille',
+    'reduce': 'Réduire',
+    'previous': 'Précédent',
+    'next': 'Suivant',
+    'home': 'Accueil',
+    'about': 'À propos',
+    'settings': 'Paramètres',
+    'option_image': 'Choisir image',
+    'corrupted_image': 'Image corrompue',
+    'option_checklist': 'Checklist',
+    'option_link': 'Lier une note',
+    'option_attachment': 'Pièce jointe',
+    'edit': 'Modifier',
+    'option_find': 'Chercher dans la note',
+    'option_move': 'Déplacer vers',
+    'option_lock': 'Verrouiller',
+    'option_unlock': 'Déverrouiller',
+    'auth_reason': 'Authentifiez-vous pour accéder à la note',
+    'delete_locked_error':
+        'Les notes verrouillées ne peuvent pas être supprimées',
+    'lock_unavailable_title': 'Impossible de verrouiller la note',
+    'lock_requires_device_lock':
+        'Configurez un verrou d\'écran (code ou biométrie) pour verrouiller une note',
+    'option_bug_report': 'Autoriser les rapports de bug',
+    'option_update': 'Mise à jour',
+    'update_up_to_date': 'Vous êtes à jour',
+    'update_unavailable': 'Vérification indisponible',
+    'option_archive': 'Archive',
+    'option_recycle_bin': 'Corbeille',
+    'option_reset_data': 'Réinitialiser',
+    'desc_bug_report':
+        "Envoyez des diagnostics facultatifs sans contenu de note ni identifiant persistant d’usager. Vous pouvez retirer votre consentement à tout moment.",
+    'desc_archive':
+        'Les notes et tâches archivées quittent l\'accueil et leurs dossiers jusqu\'à leur désarchivage.',
+    'desc_recycle_bin':
+        'Les notes supprimées sont conservées dans la corbeille pendant 30 jours avant d\'être définitivement effacées.',
+    'desc_reset_data':
+        'La réinitialisation supprimera définitivement toutes vos notes et préférences. Cette action est irréversible.',
+    'option_delete_data': 'Supprimer toutes les données',
+    'option_delete_prefs': 'Supprimer toutes les préférences',
+    'desc_delete_data':
+        'Ceci supprimera définitivement toutes vos notes et pièces jointes.',
+    'desc_delete_prefs':
+        'Ceci réinitialisera tous vos réglages (thème, langue, tri) à leurs valeurs par défaut.',
+    // Menu
+    'menu_list': 'Liste',
+    'menu_left_side': 'À gauche',
+    'menu_grid': 'Grille',
+    'menu_sorting': 'Triage',
+    'menu_theme': 'Apparence',
+    'theme_automatic': 'Automatique',
+    'menu_date': 'Date',
+    'menu_modified': 'Modifié récemment',
+    'menu_title': 'Titre',
+    'menu_favorites': 'Important',
+    'menu_theme_sort': 'Thème',
+    'menu_descending': 'Décroissant',
+    'menu_language': 'Langue',
+    'menu_english': 'Anglais',
+    'menu_french': 'Français',
+    'menu_malagasy': 'Malagasy',
+    'theme_light': 'Clair',
+    'theme_dark': 'Sombre',
+    'language_references': 'Références Linguistiques',
+    'attachment': 'Pièce jointe',
+    'attachments': 'Pièces jointes',
+    // Police de confidentialité. Le texte de référence vit dans docs/privacy.md.
+    'privacy': 'Confidentialité',
+    'privacy_intro':
+        "TanoNote ne nécessite aucun compte. Vos notes et dossiers sont stockés localement. Les diagnostics facultatifs et la vérification des mises à jour utilisent des services externes.",
+    'privacy_local_title': 'Données stockées sur votre appareil',
+    'privacy_local_body':
+        "Vos notes, dossiers, pièces jointes et préférences sont enregistrés localement, dans l'espace privé de l'application.",
+    'privacy_encryption_title': 'Chiffrement au repos',
+    'privacy_encryption_body':
+        "La base de données et les pièces jointes sont chiffrées sur l'appareil. La clé est conservée dans le stockage sécurisé du système et n'en sort jamais.",
+    'privacy_crash_title': 'Rapports de crash (facultatif)',
+    'privacy_crash_body':
+        "Désactivés par défaut. Avec « {option_bug_report} », les versions configurées envoient à Sentry (Functional Software, Inc.) des types d’erreurs, symboles de pile filtrés, version de l’app, modèle de l’appareil, version de l’OS et région configurée (pas de localisation précise). Le contenu des notes, les messages d’erreur libres et les identifiants persistants d’usagers sont exclus. Les services réseau reçoivent nécessairement votre adresse IP ; sa conservation doit être limitée par leur configuration. Le retrait du consentement arrête les nouvelles captures ; des rapports déjà en attente ou transmis peuvent subsister.",
+    'privacy_updates_title': 'Vérification des mises à jour',
+    'privacy_updates_body':
+        "Lorsque vous demandez une vérification depuis À propos, l’app contacte l’App Store ou Google Play. Aucun contenu de note n’est transmis. Le store traite les métadonnées réseau de cette requête.",
+    'privacy_tracking_title': 'Aucun pistage, aucune publicité',
+    'privacy_tracking_body':
+        "TanoNote ne contient ni analyse d'usage, ni publicité, ni traceur tiers, et ne vend ni ne partage vos données. Rien n'est collecté tant que vous n'activez pas les rapports de crash.",
+    'privacy_delete_title': 'Supprimer vos données',
+    'privacy_delete_body':
+        "Les paramètres permettent de supprimer les données locales de l’app. Cela n’efface pas les exports, les copies détenues par d’autres applications ni les diagnostics déjà envoyés. Les anciennes sauvegardes de test en clair sont supprimées à l’ouverture du stockage local.",
+    'privacy_updated': 'Dernière mise à jour : septembre {year}',
+    'licenses': 'Licences',
+    'delete_photo': 'Supprimer la photo',
+    if (kDebugMode) 'developer_reset': 'Réinitialisation développeur',
+    if (kDebugMode)
+      'developer_reset_failed':
+          'La réinitialisation a échoué. Certaines données ont peut-être déjà été remplacées. Réessayez pour recharger toutes les données de démonstration.',
+    // Labos : la surface développeur, réservée aux versions debug.
+    if (kDebugMode) 'labs': 'Labos',
+    if (kDebugMode)
+      'labs_hint':
+          'Outils développeur. Réservés aux versions debug, jamais à une version publiée.',
+    if (kDebugMode) 'labs_sentry_test': 'Envoyer une erreur de test',
+    if (kDebugMode) 'labs_sentry_sent': 'Erreur de test envoyée à Sentry.',
+    if (kDebugMode)
+      'labs_sentry_unavailable':
+          'Les rapports de crash sont désactivés. Activez-les avant d’envoyer un test.',
+    // Introduction
+    'onboarding_skip': 'Passer',
+    'onboarding_next': 'Suivant',
+    'onboarding_start': 'Commencer',
+    'onboarding_title_1': 'Toutes vos notes au même endroit',
+    'onboarding_body_1':
+        'Écrivez où que vous soyez. TanoNote fonctionne sans connexion et garde tout chiffré sur votre téléphone. Aucun compte, aucun suivi.',
+    'onboarding_title_2': 'Verrouillez ce qui compte',
+    'onboarding_body_2':
+        "Protégez une note par code ou par empreinte : elle ne s'ouvre qu'après vérification.",
+    'onboarding_title_3': "De l'ordre, et un retour en arrière",
+    'onboarding_body_3':
+        'Classez vos notes dans des dossiers et retrouvez dans la corbeille tout ce que vous supprimez — avec une annulation en un geste.',
+    'onboarding_replay': "Revoir l'introduction",
+    // Retours et texte
+    'menu_feedback': 'Retours et texte',
+    'text_size_small': 'Petit',
+    'text_size_normal': 'Normal',
+    'text_size_large': 'Grand',
+    'text_size_extra_large': 'Plus grand',
+    'feedback_haptics': 'Retour haptique',
+    'feedback_sound': 'Son',
+    'moved_to': 'déplacé(e) vers {folder}',
+    'moved_home': "ramené(e) à l'accueil",
+    'moved': 'déplacé(e)',
+    'note_locked': 'Note verrouillée',
+    'note_unlocked': 'Note déverrouillée',
+    'folder_locked': 'Dossier verrouillé',
+    'folder_unlocked': 'Dossier déverrouillé',
+    // Recherche
+    'search_history': 'Récentes',
+  };
+
+  static const Map<String, String> _mg = <String, String>{
+    // Home
+    'all_docs': 'Izy rehetra',
+    'filter_all': 'Daholo',
+    'filter_notes': 'Tano',
+    'filter_tasks': 'Kasa',
+    'docs': 'rakitra',
+    'doc': 'rakitra',
+    'my_folders': 'Ireo fonoka',
+    'folder': 'fonoka',
+    'folders': 'fonoka',
+    'no_folder': 'foana',
+    'delete_folder': 'Manary fonoka',
+    'delete_folder_question':
+        'Fonoka mihazon-javatra {count} ity. Hariana miaraka aminy daholo ve?',
+    'search_results': 'Voka-pikarohana',
+    'add_folder': 'Hanampy fonoka',
+    'folder_name': 'Anaran\'ny fonoka',
+    'folder_empty': 'Fonoka poakaty',
+    'trash_empty': 'Fongana ny fako',
+    'archive_empty': 'Tahiry poakaty',
+    'unarchive': 'Fongarina',
+    'archive_done': 'Voatahiry',
+    'note': 'tano',
+    'notes': 'tano',
+    'search': 'Karohy',
+    'all_notes_selected': 'Voafantina daholo ireo tano {count}',
+    'notes_selected': 'Tano {count}/{total} voafantina',
+    'single_note_selected': 'Tano {count} voafantina',
+    'single_task_selected': 'Kasa {count} voafantina',
+    'single_doc_selected': 'Rakitra {count} voafantina',
+    'tasks_selected': 'Kasa {count}/{total} voafantina',
+    'all_tasks_selected': 'Voafantina daholo ireo kasa {count}',
+    'docs_selected': 'Rakitra {count}/{total} voafantina',
+    'all_docs_selected': 'Voafantina daholo ireo rakitra {count}',
+    'single_folder_selected': 'Fonoka {count} voafantina',
+    'folders_selected': 'Fonoka {count}/{total} voafantina',
+    'all_folders_selected': 'Voafantina daholo ireo fonoka {count}',
+    'delete_note': 'Hanary tano',
+    'delete_notes': 'Hanary ireo tano {count}',
+    'delete_all_notes': 'Hanary ireo tano rehetra',
+    'delete': 'Fafao',
+    'reset': 'Afongano',
+    'select': 'Hifantina',
+    'select_all': 'Izy rehetra',
+    'select_none': 'Tsisy',
+    'note_deleted': 'Voafafa ny tano',
+    'deleted': 'voafafa',
+    'undo': 'Ampodio',
+    'save_before_leave': 'Raiketo alohan\'ny hiala',
+    'save': 'Raiketo',
+    'title_here': 'Lohateny eto',
+    'content_empty': 'Tsy maintsy fenoina ny votoatiny',
+    'no_note_found': 'Tsy nisy raha hita',
+    'results': 'Raha {count} no hita',
+    'confirm_question': 'Tohizina tokoa ve?',
+    'quit': 'Hiala',
+    'retry': 'Andramo indray',
+    'data_transfer_title': 'Aiditra & avoaka',
+    'desc_export_data':
+        'Avoahy ho rakitra .tano ny tano sy ny kojany, voahidy na tsia.',
+    'desc_import_data':
+        'Aidiro ny tano sy ny kojany avy amin\'ny rakitra .tano. Tsy ho very ny efa ao.',
+    'option_export_before_reset': 'Tehirizo aloha ny angona',
+    'desc_export_before_reset':
+        'Tandremo fa tsy mimpody intsony izay voafafa. Tehirizo aloha izay angona.',
+    'export_data': 'Avoaka ny angona',
+    'import_data': 'Hampiditra angona',
+    'export_action': 'Avoaka',
+    'export_encrypt': 'Hatao hidim-boay',
+    'export_password': 'Ankaromiafina',
+    'export_password_hint': '8 litera farafahakeliny',
+    'password_too_short': 'Tokony 8 litera farafahakeliny ny ankaromiafina.',
+    'export_locked_required': 'Misy tano mihidy ao ka tsy maintsy mila ankaromiafina.',
+    'export_failed': 'Nisy olana ny famoahana.',
+    'export_done': 'Tomombana soa aman-tsara.',
+    'import_password_title': 'Famoahana voahidy',
+    'import_password_message':
+        'Mitaky ankaromiafina ity famoahana ity.',
+    'import_failed': 'Tsy tomombana ny fampidirana',
+    'import_too_large': 'Mihoatra ny fetra 64 MiB ity rakitra ity.',
+    'import_done':
+        '{added} tano nampidirina, {folders} fonoka, {skipped} nolavina, {unlocked} tsisy hidiny.',
+    'import_clear_warning':
+        'Mibanaka avokoa ireo rakitra havoaka. Asio ankaromiafina.',
+    'quit_app': 'Hiala',
+    'privacy_screen_locked':
+        "Mitady ankaromiafina ity vao misokatra. Hamarino raha manan-jo ianao.",
+    'storage_recovery_message':
+        "Diby ny fitahirizana. Jereo aloha raha mbola malalaka dia andramo indray avy eo. Tsy hofafana ny angonao.",
+    'load_error_title': 'Tsy tomombana ny fahan-tano',
+    'load_error_message':
+        'Tsy miainga ilay rindrambaiko. Mba avereno indray.',
+    'cancel': 'Atsaharo',
+    'ok': 'OK',
+    'back': 'Hiverina',
+    'no_title': 'Tsy misy lohateny',
+    'no_data': 'Mbola foana hatreto',
+    'empty': 'Foana',
+    'edit_note': 'Hanova tano',
+    'completed_tasks': 'Kasa vita',
+    'description_limit': 'Voafetra ho tarehintsoratra 500 ihany ny visavisa.',
+    'add_description': 'Hanampy visavisa',
+    'description': 'Visavisa',
+    'find_in_tasks': 'Zahavo ao anaty kasa',
+    'add_task': 'Hanampy kasa',
+    'edit_task': 'Hanova kasa',
+    'tasks': 'kasa',
+    'task': 'kasa',
+    'add_task_item': 'Hanampy singa',
+    'add_note': 'Hanampy tano',
+    'find_in_note': 'Zahavo ao anaty tano',
+    'chars': 'litera',
+    'folders_group': 'Fonoka',
+    'notes_group': 'Rakitra',
+    'title': 'Lohateny',
+    'content': 'Votoatiny',
+    'important': 'Zava-dehibe',
+    'about_description':
+        "Ny TanoNote dia fitaovana fanoratana tsotra, azo antoka ary haingana natao hanampiana anao amin'ny fandaminana ny hevitrao sy ny fifantohana. Omenay lanja ny tsiambaratelonao ka ao anatin'ny findainao ihany no mipetraka ny angon-drakitrao rehetra.",
+    'about_cta':
+        "Ampio izahay hampandroso sy hanatsara hatrany ny TanoNote! Ny fanohananao dia mamela anay hihazona ity fitaovana ity ho maimaim-poana sy hanaja ny tsiambaratelon'ny rehetra. Azonao atao ireto manaraka ireto:",
+    'about_premium': "Tolotra Premium",
+    'premium_projects': "Tetikasa",
+    'premium_sharing': "Fizarana",
+    'premium_collaboration': "Fiaraha-miasa",
+    'premium_intro':
+        "Ao anaty tolotra Premium ny tetikasa, ny fizarana ary ny fiaraha-miasa.",
+    'premium_unavailable':
+        "Mbola eo am-pamolavolana ny tolotra Premium. Tsy mbola afaka jifaina.",
+    'about_more': "Azonao atao koa (sady tsy mila anarana) ny:",
+    'close_button': 'Hidio',
+    // Accessibility labels for icon-only actions.
+    'more': 'Be kokoa',
+    'redo': 'Averina',
+    'add': 'Hanampy',
+    'clear': 'Fafao',
+    'sort_by': "Alaharo araka",
+    'sort_direction': 'Tondron-dahatra',
+    'toggle_theme': 'Hivadi-dafy',
+    'empty_trash': 'Daba-pako babangoana',
+    'reduce': 'Ahena',
+    'previous': 'Teo aloha',
+    'next': 'Manaraka',
+    'home': 'Fianjaikana',
+    'about': 'Ny momba azy',
+    'settings': 'Fanamory',
+    'option_image': 'Hametaka sary',
+    'corrupted_image': 'Sary tsy vanona',
+    'option_checklist': 'Lisi-kasa',
+    'option_link': 'Handrohy tano',
+    'option_attachment': 'Anentan-koja',
+    'edit': 'Ovay',
+    'option_find': 'Zahao ao anaty tano',
+    'option_move': 'Hafindra any amin\'ny',
+    'option_lock': 'Hanidy',
+    'option_unlock': 'Hanala hidy',
+    'auth_reason': 'Hamarino ny zonao hijery tiy tano ity',
+    'delete_locked_error': 'Tsy azo fafana ny tano voahidy',
+    'lock_unavailable_title': 'Tsy azo hidiana ny naoty',
+    'lock_requires_device_lock':
+        'Mametraha hidy efijery (kaody na biometrika) vao afaka manidy naoty',
+    'option_bug_report': 'Hamela ny tatitra bug',
+    'option_update': 'Hizaha vao',
+    'update_up_to_date': 'Efa vao ity',
+    'update_unavailable': 'Tsy afaka mizaha vao',
+    'option_archive': 'Tahiry',
+    'option_recycle_bin': 'Fitoeram-pako',
+    'option_reset_data': 'Hampody angona',
+    'desc_bug_report':
+        "Alefaso raha tianao ny tatitra ara-teknika tsy misy famantarana ny momba anao na ireo zavatrao. Azonao ajanona amin'ny fotoana rehetra ny fanekenao.",
+    'desc_recycle_bin':
+        'Ireo tano voafafa dia voatahiry ao amin\'ny fitoeram-pako mandritra ny 30 andro alohan\'ny hamafana azy tanteraka.',
+    'desc_reset_data':
+        'Ny famonganana ny angona dia hamafa tanteraka ny zavatra sy lamina rehetra nataonao ka tsy ho afaka ampody intsony.',
+    'option_delete_data': 'Hanary ny angona rehetra',
+    'option_delete_prefs': 'Hamafa ny lamina rehetra',
+    'desc_delete_data':
+        'Ho fongana tanteraka avokoa ny zavatra rehetra raha tohizana izao.',
+    'desc_delete_prefs':
+        'Hamerina ny zava-drehetra (loko, fiteny, lamina) ho amin\'ny toa vao izany.',
+    // Menu
+    'menu_list': 'Lisitra',
+    'menu_left_side': 'Ankavia',
+    'menu_grid': 'Efajoro',
+    'menu_sorting': 'Lamina',
+    'menu_theme': 'Lafiny',
+    'theme_automatic': 'Mandeha ho azy',
+    'menu_date': 'Daty',
+    'menu_modified': 'Vao novaina',
+    'menu_title': 'Lohateny',
+    'menu_favorites': 'Zava-dehibe',
+    'menu_theme_sort': 'Loko',
+    'menu_descending': 'Mifanohitra',
+    'menu_language': 'Fiteny',
+    'menu_english': 'Anglisy',
+    'menu_french': 'Frantsay',
+    'menu_malagasy': 'Malagasy',
+    'theme_light': 'Mazava',
+    'theme_dark': 'Matroka',
+    'language_references': 'Rakiteny tsotra',
+    'attachment': 'Anentan-koja',
+    'attachments': 'Anentan-koja',
+    // Politikan'ny tsiambaratelo. Ny lahatsoratra fototra dia ao amin'ny docs/privacy.md.
+    'privacy': 'Fakapike',
+    'privacy_intro':
+        "Tsy mitaky kaonty ny TanoNote. Ny zavatrao rehetra dia mijanona any aminao. Ny raharaha ivelany dia mahakasika ny tatitra bug fotsiny ihany izay tsy voateny hekenao anefa.",
+    'privacy_local_title': "Tsy mivoaka ny findainao ny zavatrao",
+    'privacy_local_body':
+        "Ny tano, ny rakitra, ny rakitra ampiana ary ny fikirana dia tehirizina eo an-toerana, ao amin'ny fitahirizana manokana an'ny rindrankajy.",
+    'privacy_encryption_title': "Fanafenana ny angona",
+    'privacy_encryption_body':
+        "Ny banky angona sy ny rakitra ampiana dia afenina ao amin'ny finday. Ny fanalahidy dia tehirizina ao amin'ny fitahirizana azo antoka an'ny rafitra ary tsy mivoaka mihitsy.",
+    'privacy_crash_title': 'Tatitra momba ny olana (tsy voatery)',
+    'privacy_crash_body':
+        "Tsy mandeha raha tsy manaiky ianao. Raha velomina ny « {option_bug_report} », dia afaka mandefa karazana hadisoana, marika ara-teknika voasivana, dikan-tenin’ny app, modelin’ny fitaovana, dikan-tenin’ny OS ary faritra voafidy (fa tsy toerana marina) any amin’ny Sentry (Functional Software, Inc.) ny app voakirakira amin’izany. Tsy tafiditra ny votoatin’ny naoty, ny hafatra malalaka na ny famantarana maharitra ny mpampiasa. Hitan’ny tolotra tambajotra ny adiresy IP; mila ferana amin’ny fikirany ny fitahirizana azy. Mijanona ny fanangonana vaovao rehefa esorina ny fanekena, fa mety mbola hisy tatitra efa nalefa na miandry.",
+    'privacy_updates_title': 'Fanamarinana ny fanavaozana',
+    'privacy_updates_body':
+        "Rehefa mangataka fanamarinana ao amin’ny Momba ny ianao dia mifandray amin’ny App Store na Google Play ny app. Tsy alefa ny votoatin’ny naoty. Ny store no mikarakara ny metadata momba ilay fifandraisana.",
+    'privacy_tracking_title': 'Tsy misy fanarahana, tsy misy doka',
+    'privacy_tracking_body':
+        "Ny TanoNote dia tsy misy fandinihana fampiasana, tsy misy doka ary tsy misy mpanara-maso avy any ivelany; tsy mivarotra na mizara ny angonao izy. Tsy misy angonina raha tsy velonao ny tatitra momba ny olana.",
+    'privacy_delete_title': 'Famafana ny angonao',
+    'privacy_delete_body':
+        "Afaka mamafa ny angona eo an-toerana ao amin’ny fikirana ianao. Tsy mamafa ny rakitra naondrana, ny kopia any amin’ny app hafa na ny tatitra efa nalefa izany. Fafana rehefa misokatra ny fitahirizana ireo tahiry fitsapana tranainy tsy voafina.",
+    'privacy_updated': 'Farany nohavaozina: Septambra {year}',
+    'licenses': 'Lisansa',
+    'delete_photo': 'Hanala sary',
+    if (kDebugMode) 'developer_reset': 'Reset developer',
+    if (kDebugMode)
+      'developer_reset_failed':
+          'Tsy vita ny famerenana. Mety efa niova ny angona sasany. Andramo indray hampidirana ny angona andrana rehetra.',
+    // Laboratoara: ny sehatra ho an'ny mpamorona, amin'ny kinova debug ihany.
+    if (kDebugMode) 'labs': 'Andrana',
+    if (kDebugMode)
+      'labs_hint':
+          "Fitaovana ho an'ny mpamorona. Amin'ny kinova debug ihany, tsy amin'ny kinova avoaka.",
+    if (kDebugMode) 'labs_sentry_test': 'Alefaso ny andrana misy fahadisoana',
+    if (kDebugMode)
+      'labs_sentry_sent':
+          "Nalefa tany amin'ny Sentry ny hadisoana andrana.",
+    if (kDebugMode)
+      'labs_sentry_unavailable':
+          'Tsy mandeha ny tatitra momba ny olana. Velomy aloha vao manandrana indray.',
+    // Fampidirana
+    'onboarding_skip': 'Dingano',
+    'onboarding_next': 'Manaraka',
+    'onboarding_start': 'Hanomboka',
+    'onboarding_title_1': "Ny tanonao rehetra amin'ny toerana iray",
+    'onboarding_body_1':
+        "Ampiasao amin'ny fotoana rehetra ary na aiza na aiza, tsy mila aterineto ny TanoNote ary ny zava-drehetra voaaro ao amin'ny findainao. Tsy misy kaonty, tsy misy fanaraha-maso.",
+    'onboarding_title_2': 'Hidio izay zava-dehibe',
+    'onboarding_body_2':
+        "Arovy amin'ny kaody na ny dian-tanana ny tano iray: tsy misokatra izy raha tsy efa voamarina ianao.",
+    'onboarding_title_3': 'Fandaminana sy fiverenana',
+    'onboarding_body_3':
+        "Alamino anaty fonoka ny tanonao, hita ao amin'ny fitoeram-pako izay voafafa — tsindry iray dia afaka mampody azy.",
+    'onboarding_replay': 'Avereno jerena ny fanolorana',
+    // Famaliana sy lahatsoratra
+    'menu_feedback': 'Hetsika sy soratra',
+    'text_size_small': 'Kely',
+    'text_size_normal': 'Antonony',
+    'text_size_large': 'Lehibe',
+    'text_size_extra_large': 'Lehibe kokoa',
+    'feedback_haptics': 'Hovitra',
+    'feedback_sound': 'Feo',
+    'moved_to': "nafindra tany amin'ny {folder}",
+    'moved_home': "naverina tany amin'ny fianjaikana",
+    'moved': 'nafindra',
+    'note_locked': 'Voahidy ny tano',
+    'note_unlocked': 'Novahana ny tano',
+    'folder_locked': 'Voahidy ny fonoka',
+    'folder_unlocked': 'Novahana ny fonoka',
+    // Fikarohana
+    'search_history': 'Teo aloha',
+  };
+
+  /// Returns the string associated with [key] in the current language,
+  /// replacing the `{name}` parameters provided in [params].
+  static String tr(String key, [Map<String, String>? params]) {
+    return trFor(LocaleController.instance.language, key, params);
+  }
+
+  /// Returns the string associated with [key] in a specific language.
+  static String trFor(String lang, String key, [Map<String, String>? params]) {
+    final Map<String, String> table = switch (lang) {
+      'fr' => _fr,
+      'mg' => _mg,
+      _ => _en,
+    };
+    String text = table[key] ?? _en[key] ?? key;
+    if (params != null) {
+      params.forEach((String name, String value) {
+        text = text.replaceAll('{$name}', value);
+      });
+    }
+    return text;
+  }
+}

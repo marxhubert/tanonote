@@ -1,0 +1,862 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:material_symbols_icons/symbols.dart';
+import 'package:tano/shared/widgets/theme.dart';
+
+/// Inline note-markdown helpers shared by the editor and the note cards.
+///
+/// The stored note content stays plain text; these helpers render a light
+/// markdown subset (headings, task lists, bullets, bold, inline code and
+/// note links) as styled [InlineSpan]s while keeping a strict 1:1 mapping
+/// between source characters and rendered characters, so the text cursor
+/// stays synchronized.
+final RegExp headingLineRegExp = RegExp(r'^#{1,3} ');
+
+/// Whether [line] is a checklist item line (`- [ ] ` or `- [x] `).
+bool isTaskLine(String line) =>
+    line.startsWith('- [ ] ') || line.startsWith('- [x] ');
+
+/// Whether [line] is a markdown heading line (#, ## or ###).
+bool isHeadingLine(String line) => headingLineRegExp.hasMatch(line);
+
+/// The item text after the 6-character checkbox marker.
+String taskLineBody(String line) => line.length > 6 ? line.substring(6) : '';
+
+/// Number of checklists in [text]: each run of consecutive task lines counts
+/// as one checklist.
+int checklistCount(String text) {
+  final List<String> lines = text.split('\n');
+  int count = 0;
+  bool inBlock = false;
+  for (final String line in lines) {
+    if (isTaskLine(line)) {
+      if (!inBlock) {
+        count++;
+        inBlock = true;
+      }
+    } else {
+      inBlock = false;
+    }
+  }
+  return count;
+}
+
+/// Number of note links in [text] (the [[id:title]] pattern).
+int linkCountIn(String text) =>
+    LinkTextEditingController.linkRegExp.allMatches(text).length;
+
+/// Toggles the checkbox of the task line under [offset] (which must fall in
+/// the 6-character marker region) and returns the new full text, or null
+/// when [offset] is not on a task checkbox.
+String? toggleTaskItemAt(String text, int offset) {
+  if (offset < 0 || offset >= text.length) return null;
+  final int lineStart = offset <= 0
+      ? 0
+      : text.lastIndexOf('\n', offset - 1) + 1;
+  int lineEnd = text.indexOf('\n', offset);
+  if (lineEnd < 0) lineEnd = text.length;
+  final String line = text.substring(lineStart, lineEnd);
+  if (!isTaskLine(line)) return null;
+  final int relative = offset - lineStart;
+  if (relative < 0 || relative >= 6) return null;
+  final String toggled = line.startsWith('- [x] ')
+      ? '- [ ] ${line.substring(6)}'
+      : '- [x] ${line.substring(6)}';
+  return text.replaceRange(lineStart, lineEnd, toggled);
+}
+
+/// Returns the line boundaries and the current title of a checklist title
+/// line when [offset] points at its drag handle (the marker region of a
+/// heading line directly above a task block), otherwise null.
+({int lineStart, int lineEnd, String title})? checklistTitleAt(
+  String text,
+  int offset,
+) {
+  if (offset < 0 || offset >= text.length) return null;
+  final int lineStart = offset <= 0
+      ? 0
+      : text.lastIndexOf('\n', offset - 1) + 1;
+  int lineEnd = text.indexOf('\n', offset);
+  if (lineEnd < 0) lineEnd = text.length;
+  final String line = text.substring(lineStart, lineEnd);
+  final Match? heading = headingLineRegExp.firstMatch(line);
+  if (heading == null) return null;
+  final int relative = offset - lineStart;
+  if (relative < 0 || relative >= 3) return null;
+
+  // The heading must be directly followed by a task line to be a title.
+  final int nextStart = lineEnd + 1;
+  if (nextStart > text.length) return null;
+  int nextEnd = text.indexOf('\n', nextStart);
+  if (nextEnd < 0) nextEnd = text.length;
+  if (!isTaskLine(text.substring(nextStart, nextEnd))) return null;
+
+  return (
+    lineStart: lineStart,
+    lineEnd: lineEnd,
+    title: line.substring(heading.group(0)!.length),
+  );
+}
+
+/// Builds the content and caret position after inserting a checklist.
+///
+/// The block is a title line (heading with a drag handle, initially empty)
+/// followed by one empty item, without blank lines around it. When
+/// [hasFocus] is true it is inserted at [caret]; otherwise it is appended
+/// at the end of the note.
+({String text, int caret}) insertChecklistBlock(
+  String text, {
+  required bool hasFocus,
+  required int caret,
+}) {
+  const String block = '## \n- [ ] ';
+  if (text.isEmpty) {
+    return (text: block, caret: block.length);
+  }
+  if (!hasFocus || caret < 0 || caret > text.length) {
+    final String newText = text + (text.endsWith('\n') ? '' : '\n') + block;
+    return (text: newText, caret: newText.length);
+  }
+  final String before = text.substring(0, caret);
+  final String after = text.substring(caret);
+  final String lead = before.isEmpty || before.endsWith('\n') ? '' : '\n';
+  final String trail = after.isEmpty || after.startsWith('\n') ? '' : '\n';
+  final String newText = before + lead + block + trail + after;
+  return (text: newText, caret: before.length + lead.length + block.length);
+}
+
+/// Removes checklists that have no item text: every empty item line is
+/// dropped, and a block left without any item is removed together with the
+/// heading directly above it (its optional title). Runs of more than two
+/// blank lines are collapsed to two.
+String cleanEmptyChecklists(String text) {
+  final List<String> lines = text.split('\n');
+  final List<String> result = <String>[];
+  int i = 0;
+  while (i < lines.length) {
+    if (isTaskLine(lines[i])) {
+      final int blockStart = i;
+      while (i < lines.length && isTaskLine(lines[i])) {
+        i++;
+      }
+      final List<String> block = lines.sublist(blockStart, i);
+      final bool allEmpty = block.every(
+        (String l) => taskLineBody(l).trim().isEmpty,
+      );
+      if (allEmpty) {
+        // Remove the whole empty checklist and its optional title heading.
+        if (result.isNotEmpty && isHeadingLine(result.last)) {
+          result.removeLast();
+        }
+      } else {
+        for (final String l in block) {
+          if (taskLineBody(l).trim().isEmpty) continue;
+          result.add(l);
+        }
+      }
+    } else {
+      result.add(lines[i]);
+      i++;
+    }
+  }
+  if (result.join('\n') == text) return text;
+
+  final List<String> collapsed = <String>[];
+  int blankRun = 0;
+  for (final String l in result) {
+    if (l.trim().isEmpty) {
+      blankRun++;
+      if (blankRun > 2) continue;
+    } else {
+      blankRun = 0;
+    }
+    collapsed.add(l);
+  }
+  while (collapsed.isNotEmpty && collapsed.last.trim().isEmpty) {
+    collapsed.removeLast();
+  }
+  return collapsed.join('\n');
+}
+
+/// Continues a checklist automatically: pressing Enter at the end of a
+/// task line inserts a new empty item right below it.
+class AutoTaskItemFormatter extends TextInputFormatter {
+  const AutoTaskItemFormatter();
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final String oldText = oldValue.text;
+    final String newText = newValue.text;
+    if (newText.length != oldText.length + 1) return newValue;
+
+    // The inserted character is expected right at the old caret.
+    final TextSelection selection = oldValue.selection;
+    if (!selection.isValid || !selection.isCollapsed) return newValue;
+    final int insertAt = selection.baseOffset;
+    if (insertAt < 0 || insertAt >= newText.length) return newValue;
+    if (newText.substring(0, insertAt) + newText.substring(insertAt + 1) !=
+        oldText) {
+      return newValue;
+    }
+    if (newText[insertAt] != '\n') return newValue;
+
+    // The line ending right before the inserted newline must be a task line.
+    final int lineStart = insertAt <= 0
+        ? 0
+        : oldText.lastIndexOf('\n', insertAt - 1) + 1;
+    final String line = oldText.substring(lineStart, insertAt);
+    if (!isTaskLine(line)) return newValue;
+    if (taskLineBody(line).trim().isEmpty) {
+      // Pressing Enter on an empty item exits checklist mode: the item line
+      // is omitted, leaving one blank line in its place. The behavior is
+      // identical whether the checklist is mid-note or at the end of the
+      // note, and the caret stays on that blank line so the user can keep
+      // typing or insert another checklist right below.
+      final String adjusted =
+          '${oldText.substring(0, lineStart)}${oldText.substring(insertAt)}';
+      return TextEditingValue(
+        text: adjusted,
+        selection: TextSelection.collapsed(offset: lineStart),
+      );
+    }
+
+    final String adjusted =
+        '${newText.substring(0, insertAt + 1)}- [ ] ${newText.substring(insertAt + 1)}';
+    return TextEditingValue(
+      text: adjusted,
+      selection: TextSelection.collapsed(offset: insertAt + 1 + 6),
+    );
+  }
+}
+
+class LinkTextEditingController extends TextEditingController {
+  LinkTextEditingController({
+    super.text,
+    this.linkColor,
+    Set<String>? activeNoteIds,
+  }) : activeNoteIds = activeNoteIds != null ? Set.from(activeNoteIds) : {};
+
+  final Color? linkColor;
+  Set<String> activeNoteIds;
+
+  /// Current "find in note" query; empty means no highlight.
+  String searchQuery = '';
+
+  /// Index of the currently highlighted occurrence (for cyclic navigation).
+  int searchCurrentIndex = 0;
+
+  /// Blink intensity for the current occurrence (0..1). 1 = fully highlighted.
+  double _searchBlinkValue = 1.0;
+
+  double get searchBlinkValue => _searchBlinkValue;
+
+  set searchBlinkValue(double value) {
+    if (_searchBlinkValue == value) return;
+    _searchBlinkValue = value;
+    notifyListeners();
+  }
+
+  bool _suppressAtomicDeletion = false;
+
+  /// Sets [text] without triggering atomic link deletion. Used when restoring
+  /// a previous state (undo/redo) so a one-character difference inside a link
+  /// is not misinterpreted as a link deletion.
+  void setTextForRestore(String text) {
+    _suppressAtomicDeletion = true;
+    try {
+      this.text = text;
+    } finally {
+      _suppressAtomicDeletion = false;
+    }
+  }
+
+  /// Updates the "find in note" highlight and notifies the field to repaint.
+  void setSearchHighlight(String query, int currentIndex) {
+    if (searchQuery == query && searchCurrentIndex == currentIndex) return;
+    searchQuery = query;
+    searchCurrentIndex = currentIndex;
+    notifyListeners();
+  }
+
+  /// Returns the offsets of every *visible* occurrence of [query] in the note,
+  /// skipping matches that fall inside hidden markup (link ids, markers, the
+  /// truncated part of long link titles, …) so the counter and the highlight
+  /// stay in sync with what the user actually sees.
+  List<int> searchOccurrences(String query) {
+    if (query.isEmpty || text.isEmpty) return const <int>[];
+    final TextSpan span = buildMarkdownTextSpan(
+      text,
+      const TextStyle(),
+      linkColor ?? tanoTeal,
+      activeNoteIds,
+    );
+    final List<bool> visible = _visibleMask(span, text.length);
+    final String lowerText = text.toLowerCase();
+    final String lowerQuery = query.toLowerCase();
+    final List<int> starts = <int>[];
+    int from = 0;
+    while (true) {
+      final int index = lowerText.indexOf(lowerQuery, from);
+      if (index == -1) break;
+      if (_isRangeVisible(visible, index, query.length)) {
+        starts.add(index);
+      }
+      from = index + lowerQuery.length;
+    }
+    return starts;
+  }
+
+  static final RegExp linkRegExp = RegExp(r'\[\[([^:]+):([^\]]+)\]\]');
+  static final RegExp _headingRegExp = RegExp(r'^(#{1,3}) (.*)$');
+  static final RegExp _taskRegExp = RegExp(r'^- \[([ x])\] (.*)$');
+  static final RegExp _bulletRegExp = RegExp(r'^- (.*)$');
+  static final RegExp _inlineRegExp = RegExp(
+    r'\[\[([^:]+):([^\]]+)\]\]|\*\*([^*]+)\*\*|`([^`]+)`',
+  );
+  static const TextStyle _hiddenStyle = TextStyle(
+    fontSize: 0,
+    color: Colors.transparent,
+  );
+
+  int get linkCount => linkRegExp.allMatches(text).length;
+
+  /// Returns [position] snapped to the end of the link that contains it, so a
+  /// new link inserted there lands next to the existing link instead of inside
+  /// it (which would corrupt both into one malformed link).
+  int snapPositionOutOfLink(int position) {
+    int snapped = position;
+    for (final match in linkRegExp.allMatches(text)) {
+      if (position > match.start && position < match.end) {
+        snapped = match.end;
+      }
+    }
+    return snapped;
+  }
+
+  @override
+  set value(TextEditingValue newValue) {
+    if (_suppressAtomicDeletion) {
+      super.value = newValue;
+      return;
+    }
+    final String oldText = value.text;
+    final String newText = newValue.text;
+
+    // Only single-character deletions can trigger the atomic link removal.
+    if (newText.length == oldText.length - 1) {
+      final int deletedIndex = _deletionIndex(
+        oldText,
+        newText,
+        value.selection.baseOffset,
+      );
+      if (deletedIndex >= 0) {
+        for (final match in linkRegExp.allMatches(oldText)) {
+          // Deleting any character inside a link removes the whole link.
+          if (deletedIndex >= match.start && deletedIndex < match.end) {
+            _removeRange(match.start, match.end);
+            return;
+          }
+          // Deleting the space that directly follows a link removes the link
+          // together with that space (the whole insertion in one backspace).
+          if (deletedIndex == match.end &&
+              deletedIndex < oldText.length &&
+              oldText[deletedIndex] == ' ') {
+            _removeRange(match.start, match.end + 1);
+            return;
+          }
+        }
+      }
+    }
+
+    super.value = newValue;
+  }
+
+  /// Finds the index of the single character removed between [oldText] and
+  /// [newText], using the cursor [oldBase] to disambiguate backspace from
+  /// forward-delete. Returns -1 when the change cannot be mapped to a single
+  /// character (e.g. a selection replace).
+  int _deletionIndex(String oldText, String newText, int oldBase) {
+    // Backspace: the character just before the cursor was removed.
+    if (oldBase > 0 && oldBase <= oldText.length) {
+      if (oldText.substring(0, oldBase - 1) + oldText.substring(oldBase) ==
+          newText) {
+        return oldBase - 1;
+      }
+    }
+    // Forward delete: the character just after the cursor was removed.
+    if (oldBase >= 0 && oldBase < oldText.length) {
+      if (oldText.substring(0, oldBase) + oldText.substring(oldBase + 1) ==
+          newText) {
+        return oldBase;
+      }
+    }
+    // Fallback: first differing character.
+    int index = 0;
+    while (index < newText.length && oldText[index] == newText[index]) {
+      index++;
+    }
+    return index;
+  }
+
+  void _removeRange(int start, int end) {
+    super.value = TextEditingValue(
+      text: value.text.replaceRange(start, end, ''),
+      selection: TextSelection.collapsed(offset: start),
+    );
+  }
+
+  @override
+  TextSpan buildTextSpan({
+    required BuildContext context,
+    TextStyle? style,
+    required bool withComposing,
+  }) {
+    final TextSpan markdown = buildMarkdownTextSpan(
+      text,
+      style,
+      linkColor ?? accentColor(context),
+      activeNoteIds,
+    );
+    if (searchQuery.trim().isEmpty) {
+      return markdown;
+    }
+    final List<int> occurrences = searchOccurrences(searchQuery);
+    return _applySearchHighlight(
+      markdown,
+      searchQuery,
+      searchCurrentIndex,
+      occurrences,
+      searchBlinkValue,
+    );
+  }
+
+  /// Renders a light markdown subset (headings, task lists, bullets, bold,
+  /// inline code and note links) with a strict 1:1 source/rendered character
+  /// mapping so the text cursor stays synchronized.
+  static TextSpan buildMarkdownTextSpan(
+    String text,
+    TextStyle? style,
+    Color linkColor,
+    Set<String> activeNoteIds, {
+    double checklistIndent = 16,
+  }) {
+    if (text.isEmpty) return TextSpan(style: style);
+
+    final List<InlineSpan> children = <InlineSpan>[];
+    final List<String> lines = text.split('\n');
+    for (int i = 0; i < lines.length; i++) {
+      final bool isChecklistTitle =
+          i + 1 < lines.length &&
+          isHeadingLine(lines[i]) &&
+          isTaskLine(lines[i + 1]);
+      _appendLine(
+        children,
+        lines[i],
+        style,
+        linkColor,
+        activeNoteIds,
+        isChecklistTitle,
+        checklistIndent,
+      );
+      if (i < lines.length - 1) {
+        children.add(TextSpan(text: '\n', style: style));
+      }
+    }
+    return TextSpan(style: style, children: children);
+  }
+
+  /// Alias kept for compatibility with link-focused call sites and tests.
+  static TextSpan buildLinkTextSpan(
+    String text,
+    TextStyle? style,
+    Color linkColor,
+    Set<String> activeNoteIds,
+  ) {
+    return buildMarkdownTextSpan(text, style, linkColor, activeNoteIds);
+  }
+
+  static TextSpan _applySearchHighlight(
+    TextSpan span,
+    String query,
+    int currentIndex,
+    List<int> occurrences,
+    double blinkValue,
+  ) {
+    if (occurrences.isEmpty) return span;
+    final List<InlineSpan> children = span.children ?? const <InlineSpan>[];
+    if (children.isEmpty) return span;
+    return TextSpan(
+      style: span.style,
+      children: _highlightChildren(
+        children,
+        occurrences,
+        query.length,
+        currentIndex,
+        blinkValue,
+      ),
+    );
+  }
+
+  static List<InlineSpan> _highlightChildren(
+    List<InlineSpan> children,
+    List<int> occurrences,
+    int queryLength,
+    int currentIndex,
+    double blinkValue,
+  ) {
+    final List<InlineSpan> result = <InlineSpan>[];
+    int offset = 0;
+    for (final InlineSpan child in children) {
+      if (child is WidgetSpan) {
+        result.add(child);
+        offset += 1;
+      } else if (child is TextSpan) {
+        final String childText = child.text ?? '';
+        if (childText.isEmpty) {
+          result.add(child);
+          continue;
+        }
+        result.addAll(
+          _highlightTextSpan(
+            childText,
+            child.style,
+            offset,
+            occurrences,
+            queryLength,
+            currentIndex,
+            blinkValue,
+          ),
+        );
+        offset += childText.length;
+      } else {
+        result.add(child);
+      }
+    }
+    return result;
+  }
+
+  static List<bool> _visibleMask(TextSpan span, int length) {
+    final List<bool> mask = List<bool>.filled(length, true);
+    int offset = 0;
+    void mark(InlineSpan s) {
+      if (s is WidgetSpan) {
+        if (offset < length) mask[offset] = false;
+        offset += 1;
+      } else if (s is TextSpan) {
+        final String t = s.text ?? '';
+        final bool hidden = s.style?.fontSize == 0;
+        if (hidden) {
+          for (int i = 0; i < t.length && offset + i < length; i++) {
+            mask[offset + i] = false;
+          }
+        }
+        offset += t.length;
+        s.children?.forEach(mark);
+      }
+    }
+
+    span.children?.forEach(mark);
+    return mask;
+  }
+
+  static bool _isRangeVisible(List<bool> visible, int start, int length) {
+    if (start < 0 || start + length > visible.length) return false;
+    for (int i = start; i < start + length; i++) {
+      if (!visible[i]) return false;
+    }
+    return true;
+  }
+
+  static List<InlineSpan> _highlightTextSpan(
+    String text,
+    TextStyle? style,
+    int offset,
+    List<int> occurrences,
+    int queryLength,
+    int currentIndex,
+    double blinkValue,
+  ) {
+    final int childStart = offset;
+    final int childEnd = offset + text.length;
+    final List<InlineSpan> result = <InlineSpan>[];
+    int pos = 0;
+    for (int i = 0; i < occurrences.length; i++) {
+      final int occStart = occurrences[i];
+      final int occEnd = occStart + queryLength;
+      if (occEnd <= childStart) continue;
+      if (occStart >= childEnd) break;
+
+      final int localStart = (occStart - childStart).clamp(0, text.length);
+      final int localEnd = (occEnd - childStart).clamp(0, text.length);
+      if (localStart > pos) {
+        result.add(
+          TextSpan(text: text.substring(pos, localStart), style: style),
+        );
+      }
+      final bool isCurrent = i == currentIndex;
+      final double currentAlpha = 0.2 + 0.61 * blinkValue;
+      result.add(
+        TextSpan(
+          text: text.substring(localStart, localEnd),
+          style: (style ?? const TextStyle()).copyWith(
+            backgroundColor: isCurrent
+                ? Colors.amber.withValues(alpha: currentAlpha)
+                : Colors.amber.withValues(alpha: 0.36),
+          ),
+        ),
+      );
+      pos = localEnd;
+    }
+    if (pos < text.length) {
+      result.add(TextSpan(text: text.substring(pos), style: style));
+    }
+    return result;
+  }
+
+  static void _appendLine(
+    List<InlineSpan> children,
+    String line,
+    TextStyle? style,
+    Color linkColor,
+    Set<String> activeNoteIds,
+    bool isChecklistTitle,
+    double checklistIndent,
+  ) {
+    final TextStyle base = style ?? const TextStyle();
+
+    final Match? task = _taskRegExp.firstMatch(line);
+    if (task != null) {
+      final bool checked = task.group(1) == 'x';
+      // Left margin so the items sit under the title's body, while the
+      // title itself stays flush left.
+      children.add(
+        WidgetSpan(
+          alignment: PlaceholderAlignment.middle,
+          child: SizedBox(width: checklistIndent, height: 1),
+        ),
+      );
+      children.add(
+        WidgetSpan(
+          alignment: PlaceholderAlignment.middle,
+          child: Icon(
+            checked ? Symbols.check_box : Symbols.check_box_outline_blank,
+            size: (base.fontSize ?? TanoText.label) * 1.3,
+            color: checked
+                ? linkColor
+                : (base.color ?? Colors.grey).withValues(alpha: 0.72),
+          ),
+        ),
+      );
+      // The 4 remaining marker characters stay hidden (one rendered unit
+      // each, so the 1:1 source/rendered character mapping is preserved).
+      children.add(TextSpan(text: line.substring(2, 6), style: _hiddenStyle));
+      _appendInlineSpans(
+        children,
+        line.substring(6),
+        style,
+        linkColor,
+        activeNoteIds,
+      );
+      return;
+    }
+
+    final Match? heading = _headingRegExp.firstMatch(line);
+    if (heading != null) {
+      final String hashes = heading.group(1)!;
+      if (isChecklistTitle) {
+        // Checklist title: a drag handle flush against the left edge; the
+        // title is typed right next to it, at the content's font size and
+        // only slightly bold.
+        children.add(
+          WidgetSpan(
+            alignment: PlaceholderAlignment.middle,
+            child: Transform.translate(
+              offset: const Offset(-3, 0),
+              child: Icon(
+                Symbols.drag_indicator,
+                size: (base.fontSize ?? TanoText.label) * 1.2,
+                color: Colors.grey.withValues(alpha: 0.7),
+              ),
+            ),
+          ),
+        );
+        children.add(
+          TextSpan(text: '${hashes.substring(1)} ', style: _hiddenStyle),
+        );
+        final TextStyle titleStyle = base.copyWith(fontWeight: FontWeight.w700);
+        _appendInlineSpans(
+          children,
+          heading.group(2)!,
+          titleStyle,
+          linkColor,
+          activeNoteIds,
+        );
+        return;
+      }
+      children.add(TextSpan(text: '$hashes ', style: _hiddenStyle));
+      final double scale = hashes.length == 1
+          ? 1.5
+          : (hashes.length == 2 ? 1.35 : 1.2);
+      final TextStyle headingStyle = base.copyWith(
+        fontSize: (base.fontSize ?? TanoText.label) * scale,
+        fontWeight: FontWeight.bold,
+      );
+      _appendInlineSpans(
+        children,
+        heading.group(2)!,
+        headingStyle,
+        linkColor,
+        activeNoteIds,
+      );
+      return;
+    }
+
+    final Match? bullet = _bulletRegExp.firstMatch(line);
+    if (bullet != null) {
+      children.add(TextSpan(text: '•', style: base));
+      children.add(TextSpan(text: ' ', style: _hiddenStyle));
+      _appendInlineSpans(
+        children,
+        bullet.group(1)!,
+        style,
+        linkColor,
+        activeNoteIds,
+      );
+      return;
+    }
+
+    _appendInlineSpans(children, line, style, linkColor, activeNoteIds);
+  }
+
+  static void _appendInlineSpans(
+    List<InlineSpan> children,
+    String body,
+    TextStyle? style,
+    Color linkColor,
+    Set<String> activeNoteIds,
+  ) {
+    final TextStyle base = style ?? const TextStyle();
+    int lastOffset = 0;
+    for (final Match match in _inlineRegExp.allMatches(body)) {
+      if (match.start > lastOffset) {
+        children.add(
+          TextSpan(text: body.substring(lastOffset, match.start), style: base),
+        );
+      }
+      final String? linkId = match.group(1);
+      final String? linkTitle = match.group(2);
+      final String? boldText = match.group(3);
+      final String? codeText = match.group(4);
+      if (linkId != null && linkTitle != null) {
+        _appendLinkSpan(
+          children,
+          match.group(0)!,
+          linkId,
+          linkTitle,
+          base,
+          linkColor,
+          activeNoteIds,
+        );
+      } else if (boldText != null) {
+        children.add(TextSpan(text: '**', style: _hiddenStyle));
+        children.add(
+          TextSpan(
+            text: boldText,
+            style: base.copyWith(fontWeight: FontWeight.bold),
+          ),
+        );
+        children.add(TextSpan(text: '**', style: _hiddenStyle));
+      } else if (codeText != null) {
+        children.add(TextSpan(text: '`', style: _hiddenStyle));
+        children.add(
+          TextSpan(
+            text: codeText,
+            style: base.copyWith(fontFamily: 'monospace'),
+          ),
+        );
+        children.add(TextSpan(text: '`', style: _hiddenStyle));
+      }
+      lastOffset = match.end;
+    }
+    if (lastOffset < body.length) {
+      children.add(TextSpan(text: body.substring(lastOffset), style: base));
+    }
+  }
+
+  static void _appendLinkSpan(
+    List<InlineSpan> children,
+    String fullMatch,
+    String id,
+    String rawTitle,
+    TextStyle style,
+    Color linkColor,
+    Set<String> activeNoteIds,
+  ) {
+    String title = rawTitle;
+    // Truncate title to 30 chars
+    if (title.length > 30) {
+      title = '${title.substring(0, 27)}...';
+    }
+
+    final bool isLinkActive = activeNoteIds.contains(id);
+    final Color effectiveColor = isLinkActive
+        ? linkColor
+        : Colors.grey.withValues(alpha: 0.6);
+
+    final TextStyle linkStyle = style.copyWith(
+      color: effectiveColor,
+      fontWeight: FontWeight.bold,
+      decoration: isLinkActive ? TextDecoration.underline : TextDecoration.none,
+      decorationColor: effectiveColor,
+      decorationThickness: 0.8,
+    );
+
+    final linkChildren = <InlineSpan>[];
+    // Hide the source prefix while preserving editing offsets.
+    final int titleStartInMatch = fullMatch.indexOf(':') + 1;
+    if (titleStartInMatch > 1) {
+      linkChildren.add(
+        TextSpan(
+          text: fullMatch.substring(0, titleStartInMatch),
+          style: _hiddenStyle,
+        ),
+      );
+    }
+
+    // Title chars: show with link style.
+    linkChildren.add(TextSpan(text: title));
+
+    // Truncated remainder of the title: hide.
+    final int originalTitleLength = rawTitle.length;
+    final int displayedTitleLength = title.length;
+    if (originalTitleLength > displayedTitleLength) {
+      linkChildren.add(
+        TextSpan(
+          text: rawTitle.substring(displayedTitleLength),
+          style: _hiddenStyle,
+        ),
+      );
+    }
+
+    // Suffix ']]': hide.
+    linkChildren.add(TextSpan(text: ']]', style: _hiddenStyle));
+    children.add(TextSpan(style: linkStyle, children: linkChildren));
+  }
+
+  /// Returns the ID only if tap is on an active link.
+  String? getLinkIdAt(int offset) {
+    if (offset < 0) return null;
+    for (final match in linkRegExp.allMatches(text)) {
+      if (offset >= match.start && offset < match.end) {
+        final String id = match.group(1)!;
+        if (activeNoteIds.contains(id)) {
+          return id;
+        }
+      }
+    }
+    return null;
+  }
+}

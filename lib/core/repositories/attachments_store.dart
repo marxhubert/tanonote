@@ -1,0 +1,233 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:tano/core/services/installation_key.dart';
+import 'package:tano/core/services/local_cipher.dart';
+
+/// Stores attachments and cover images **encrypted** on disk under the
+/// documents `attachments` directory.
+///
+/// Only the stored file name is persisted on the note. The plaintext is never
+/// written to that directory: it is materialized on demand into the cache for
+/// the system viewer. Covers are decoded in memory.
+class AttachmentsStore {
+  AttachmentsStore({
+    Future<Directory> Function()? documentsDirectory,
+    Future<Directory> Function()? cacheDirectory,
+    Future<Uint8List> Function()? keyProvider,
+  }) : _documentsDirectory =
+           documentsDirectory ?? getApplicationDocumentsDirectory,
+       _cacheDirectory = cacheDirectory ?? getTemporaryDirectory,
+       _keyProvider = keyProvider ?? InstallationKey.instance.filesKey;
+
+  final Future<Directory> Function() _documentsDirectory;
+  final Future<Directory> Function() _cacheDirectory;
+  final Future<Uint8List> Function() _keyProvider;
+
+  /// Plaintext copies materialized on demand, keyed by stored name.
+  final Map<String, String> _materialized = <String, String>{};
+
+  /// How long a materialized plaintext copy may stay in the cache before it is
+  /// swept. Long enough for the system viewer, short enough that a copy does
+  /// not outlive the viewing session.
+  static const Duration materializedTtl = Duration(minutes: 10);
+
+  Future<Directory> _dir() async {
+    final Directory docs = await _documentsDirectory();
+    final Directory dir = Directory(p.join(docs.path, 'attachments'));
+    if (!await dir.exists()) {
+      await dir.create(recursive: true);
+    }
+    return dir;
+  }
+
+  /// Encrypts [sourcePath] into the attachments directory under a unique file
+  /// name and returns that stored name.
+  Future<String> import(String sourcePath, String desiredName) async {
+    final Directory dir = await _dir();
+    final String name = await _uniqueName(dir, desiredName);
+    final Uint8List clear = await File(sourcePath).readAsBytes();
+    final Uint8List encrypted = await LocalCipher.encrypt(
+      clear,
+      await _keyProvider(),
+    );
+    await File(p.join(dir.path, name)).writeAsBytes(encrypted, flush: true);
+    return name;
+  }
+
+  /// Absolute path of the stored (encrypted) attachment.
+  Future<String> pathOf(String name) async {
+    validateName(name);
+    final Directory dir = await _dir();
+    return p.join(dir.path, name);
+  }
+
+  /// Decrypts a stored attachment and returns its bytes (used by export).
+  Future<Uint8List> read(String name) async {
+    validateName(name);
+    final Directory dir = await _dir();
+    final Uint8List encrypted = await File(
+      p.join(dir.path, name),
+    ).readAsBytes();
+    return LocalCipher.decrypt(encrypted, await _keyProvider());
+  }
+
+  /// Encrypts [bytes] under [name] unless a file already exists. Returns
+  /// whether it wrote a new file (used by import).
+  Future<bool> writeIfAbsent(String name, Uint8List bytes) async {
+    validateName(name);
+    final Directory dir = await _dir();
+    final File file = File(p.join(dir.path, name));
+    if (await file.exists()) return false;
+    final Uint8List encrypted = await LocalCipher.encrypt(
+      bytes,
+      await _keyProvider(),
+    );
+    await file.writeAsBytes(encrypted, flush: true);
+    return true;
+  }
+
+  /// Decrypts [name] into the cache and returns the plaintext path, for the
+  /// system viewer. The copy is reused until removal or startup cleanup.
+  Future<String> materialize(String name) async {
+    validateName(name);
+    final String? cached = _materialized[name];
+    if (cached != null && await File(cached).exists()) return cached;
+
+    // A new viewing session is the natural moment to sweep old plaintext.
+    await clearExpiredMaterialized();
+
+    final Directory dir = await _dir();
+    final Uint8List encrypted = await File(
+      p.join(dir.path, name),
+    ).readAsBytes();
+    final Uint8List clear = await LocalCipher.decrypt(
+      encrypted,
+      await _keyProvider(),
+    );
+
+    final Directory cache = Directory(
+      p.join((await _cacheDirectory()).path, 'tano_attachments'),
+    );
+    if (!await cache.exists()) {
+      await cache.create(recursive: true);
+    }
+    final File file = File(p.join(cache.path, name));
+    await file.writeAsBytes(clear, flush: true);
+    _materialized[name] = file.path;
+    return file.path;
+  }
+
+  /// Deletes every stored attachment, the encrypted files and the
+  /// materialized copies. A hard reset calls it, so a wipe leaves nothing
+  /// behind on the disk.
+  Future<void> deleteAll() async {
+    final Directory docs = await _documentsDirectory();
+    final Directory dir = Directory(p.join(docs.path, 'attachments'));
+    if (await dir.exists()) {
+      await dir.delete(recursive: true);
+    }
+    await clearMaterialized();
+  }
+
+  Future<void> remove(String name) async {
+    validateName(name);
+    final Directory dir = await _dir();
+    final File file = File(p.join(dir.path, name));
+    if (await file.exists()) {
+      await file.delete();
+    }
+    _materialized.remove(name);
+    final temp = File(
+      p.join((await _cacheDirectory()).path, 'tano_attachments', name),
+    );
+    if (await temp.exists()) await temp.delete();
+  }
+
+  /// Removes plaintext copies, including leftovers from earlier processes.
+  Future<void> clearMaterialized() async {
+    final cache = Directory(
+      p.join((await _cacheDirectory()).path, 'tano_attachments'),
+    );
+    if (await cache.exists()) await cache.delete(recursive: true);
+    _materialized.clear();
+  }
+
+  /// Deletes plaintext copies older than [materializedTtl].
+  ///
+  /// Sweeping by the file's own modification time means copies materialized by
+  /// any [AttachmentsStore] instance in the process are collected, not only the
+  /// ones this instance remembers.
+  Future<void> clearExpiredMaterialized() async {
+    final Directory cache = Directory(
+      p.join((await _cacheDirectory()).path, 'tano_attachments'),
+    );
+    if (!await cache.exists()) return;
+    final DateTime cutoff = DateTime.now().subtract(materializedTtl);
+    await for (final FileSystemEntity entity in cache.list(followLinks: false)) {
+      if (entity is! File) continue;
+      if ((await entity.stat()).modified.isAfter(cutoff)) continue;
+      await entity.delete();
+      _materialized.remove(p.basename(entity.path));
+    }
+  }
+
+  /// Startup-only collection. Do not call while an editor/import can be active.
+  /// Never follows links or recursively deletes unexpected directories.
+  Future<int> removeUnreferenced(Set<String> referenced) async {
+    for (final name in referenced) {
+      validateName(name);
+    }
+    final directory = await _dir();
+    final entries = await directory.list(followLinks: false).toList();
+    var removed = 0;
+    for (final entry in entries) {
+      if (entry is! File) continue;
+      final name = p.basename(entry.path);
+      validateName(name);
+      if (referenced.contains(name)) continue;
+      await remove(name);
+      removed++;
+    }
+    return removed;
+  }
+
+  /// Stored names are opaque leaf names, never paths from an imported archive.
+  static void validateName(String name) {
+    if (name.trim().isEmpty ||
+        name == '.' ||
+        name == '..' ||
+        name.contains('/') ||
+        name.contains('\\') ||
+        name.contains(':') ||
+        name.codeUnits.any((c) => c < 32 || c == 127)) {
+      throw const FormatException('Invalid attachment name');
+    }
+  }
+
+  Future<String> _uniqueName(Directory dir, String desiredName) async {
+    String candidate = _sanitize(desiredName);
+    if (!await File(p.join(dir.path, candidate)).exists()) return candidate;
+
+    final String ext = p.extension(candidate);
+    final String base = ext.isEmpty
+        ? candidate
+        : candidate.substring(0, candidate.length - ext.length);
+    int i = 1;
+    while (await File(p.join(dir.path, candidate)).exists()) {
+      candidate = '$base ($i)$ext';
+      i++;
+    }
+    return candidate;
+  }
+
+  /// Keeps only the base name so a picked path cannot escape the directory.
+  String _sanitize(String name) {
+    final String base = p.basename(name);
+    final result = base.trim().isEmpty ? 'fichier' : base;
+    validateName(result);
+    return result;
+  }
+}

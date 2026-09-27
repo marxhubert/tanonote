@@ -1,0 +1,203 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:ui' as ui;
+
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:material_symbols_icons/symbols.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+/// Absolute path of the Material Symbols outline font.
+///
+/// Resolved from the package config so it follows the version actually
+/// resolved by `flutter pub get`.
+String _symbolsFontPath() {
+  final Map<String, dynamic> config =
+      jsonDecode(File('.dart_tool/package_config.json').readAsStringSync())
+          as Map<String, dynamic>;
+  final List<dynamic> packages = config['packages'] as List<dynamic>;
+  final Map<String, dynamic> entry =
+      packages.firstWhere(
+            (dynamic p) =>
+                (p as Map<String, dynamic>)['name'] == 'material_symbols_icons',
+          )
+          as Map<String, dynamic>;
+  // rootUri has no trailing slash, and `resolve` on a slashless URI replaces
+  // its last segment: rebuild the base explicitly.
+  final String root = entry['rootUri'] as String;
+  final String packageUri = entry['packageUri'] as String? ?? 'lib/';
+  return Uri.parse(
+    '$root/$packageUri',
+  ).resolve('fonts/MaterialSymbolsOutlined.ttf').toFilePath();
+}
+
+/// One-shot generator for the native splash assets.
+///
+/// The mark and the name are deliberately two separate images, because the
+/// native splash places each one itself:
+///  - `splash_logo.png`, the mark alone — a black87 disc with the white
+///    bookmark glyph at half the diameter — which every platform centres;
+///  - `splash_branding.png` / `splash_branding_dark.png`, the app name alone,
+///    "Tano" w900 + "Note" w400 at the app's 21 dp, which the native splash
+///    pins to the bottom edge.
+///
+/// Baking the name into the mark would centre the two together; only a
+/// separate branding image can sit at the bottom of the screen.
+///
+/// The source images are 4x (xxxhdpi), so dp values are multiplied by 4.
+///
+/// It lives outside `test/` on purpose: it rewrites `assets/`, so a normal
+/// `flutter test` must not pick it up. Run it explicitly with:
+///   flutter test tool/generate_splash_logo.dart
+void main() {
+  testWidgets('generate native splash assets', (tester) async {
+    // Widget tests do not load the real fonts by default, which would render
+    // the glyphs as fallback boxes. Load them from the Flutter SDK cache.
+    final String? flutterRoot = Platform.environment['FLUTTER_ROOT'];
+    Future<void> load(String family, List<String> paths) async {
+      final FontLoader loader = FontLoader(family);
+      for (final String path in paths) {
+        final Uint8List data = File(path).readAsBytesSync();
+        loader.addFont(Future<ByteData>.value(ByteData.view(data.buffer)));
+      }
+      await loader.load();
+    }
+
+    if (flutterRoot != null) {
+      final String fontsDir =
+          '$flutterRoot/bin/cache/artifacts/material_fonts/';
+      await load('Roboto', <String>[
+        '${fontsDir}Roboto-Regular.ttf',
+        '${fontsDir}Roboto-Bold.ttf',
+        '${fontsDir}Roboto-Black.ttf',
+      ]);
+    }
+    // The Symbols glyphs live in the material_symbols_icons package, not in
+    // the SDK's MaterialIcons: without that font they render as boxes. A
+    // package font family is prefixed with `packages/<package>/`.
+    await load(
+      'packages/material_symbols_icons/MaterialSymbolsOutlined',
+      <String>[_symbolsFontPath()],
+    );
+
+    tester.view.physicalSize = const Size(1152, 1536);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+
+    Future<void> renderAndSave(Widget child, String path) async {
+      final GlobalKey boundaryKey = GlobalKey();
+      await tester.pumpWidget(
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: Center(
+            child: RepaintBoundary(key: boundaryKey, child: child),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      // Image capture performs real async engine work that the fake-async
+      // test zone cannot complete, so run it inside runAsync.
+      await tester.runAsync(() async {
+        final RenderRepaintBoundary boundary =
+            boundaryKey.currentContext!.findRenderObject()!
+                as RenderRepaintBoundary;
+        final ui.Image image = await boundary.toImage();
+        final ByteData? byteData = await image.toByteData(
+          format: ui.ImageByteFormat.png,
+        );
+        File(path)
+          ..createSync(recursive: true)
+          ..writeAsBytesSync(byteData!.buffer.asUint8List());
+      });
+    }
+
+    // Circle + bookmark, replicating splash_page.dart (icon/circle = 45/90).
+    Widget logoCircle(double diameter) {
+      return SizedBox(
+        width: diameter,
+        height: diameter,
+        child: CircleAvatar(
+          radius: diameter / 2,
+          backgroundColor: Colors.black87,
+          child: Icon(
+            Symbols.bookmark,
+            color: Colors.white,
+            size: diameter / 2,
+          ),
+        ),
+      );
+    }
+
+    // App name "Tano" w900 + "Note" w400 at 21 dp (84 px at 4x), like the
+    // RichText of splash_page.dart.
+    Widget appName(double fontSize, Color color) {
+      return RichText(
+        text: TextSpan(
+          text: 'Tano',
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: fontSize,
+            fontWeight: FontWeight.w900,
+            color: color,
+          ),
+          children: <TextSpan>[
+            TextSpan(
+              text: 'Note',
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: fontSize,
+                fontWeight: FontWeight.w400,
+                color: color,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // The mark alone, at 360 px (90 dp). Every platform centres this image, so
+    // the mark lands in the middle of the screen. It is the same disc in both
+    // themes, so a single file covers light and dark.
+    await renderAndSave(
+      SizedBox(
+        width: 512,
+        height: 512,
+        child: Center(child: logoCircle(360)),
+      ),
+      'assets/splash_logo.png',
+    );
+
+    // Android 12+ icon: the platform masks the image to a centered circle,
+    // so only the mark is used. Doubled to 384 px.
+    await renderAndSave(
+      SizedBox(
+        width: 1152,
+        height: 1152,
+        child: Center(child: logoCircle(384)),
+      ),
+      'assets/splash_logo_android12.png',
+    );
+
+    // The app name alone, which every platform pins to the bottom edge. The
+    // Android 12 branding image must be exactly 800x320 px, so that size is
+    // kept for all of them.
+    Widget brandText(Color color) {
+      return SizedBox(
+        width: 800,
+        height: 320,
+        child: Center(child: appName(84, color)),
+      );
+    }
+
+    await renderAndSave(
+      brandText(Colors.black87),
+      'assets/splash_branding.png',
+    );
+    await renderAndSave(
+      brandText(Colors.grey.shade300),
+      'assets/splash_branding_dark.png',
+    );
+  });
+}

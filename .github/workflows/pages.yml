@@ -1,0 +1,65 @@
+name: Publish the privacy policy
+
+# Serves site/ as a GitHub Pages site. Both stores require a public privacy
+# policy URL, and this publishes that page alone — the internal documentation
+# under docs/ stays off the web.
+
+# Every push to main republishes the page. There is deliberately no `paths`
+# filter: the site carries the version from pubspec.yaml and the values written
+# into site/config.json, so a release bump must not be able to leave the
+# deployed site showing the previous one.
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; a newer push supersedes a queued one.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy site
+    # Only the canonical repository publishes the site; forks skip this job.
+    if: github.repository == 'marxhubert/tanonote'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # The filled site/config.json is git-ignored, so the deploy writes it from
+      # a repository secret before packaging. Without that secret, the template
+      # is used and the deployed site shows the placeholders until it is set.
+      - name: Write the site configuration
+        env:
+          SITE_CONFIG_JSON: ${{ secrets.SITE_CONFIG_JSON }}
+        run: |
+          if [ -n "$SITE_CONFIG_JSON" ]; then
+            printf '%s' "$SITE_CONFIG_JSON" > site/config.json
+          else
+            cp site/config.json.dist site/config.json
+          fi
+          # Writes the pubspec.yaml version into the config. The same script
+          # runs before a local preview, so both paths agree.
+          bash tool/site_config.sh
+
+      - name: Set up Pages
+        uses: actions/configure-pages@v6
+
+      - name: Package site/
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5
